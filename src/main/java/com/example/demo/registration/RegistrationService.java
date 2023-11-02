@@ -19,7 +19,7 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public String register(RegistrationRequest request) {
+    public String registerClient(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
         if (!isValidEmail) {
@@ -33,6 +33,26 @@ public class RegistrationService {
                         request.getEmail(),
                         request.getPassword(),
                         UserRole.USER
+                )
+        );
+
+        return token;
+    }
+
+    public String registerAdministrator(RegistrationRequest request) {
+        boolean isValidEmail = emailValidator.test(request.getEmail());
+
+        if (!isValidEmail) {
+            throw new IllegalStateException("email not valid");
+        }
+
+        String token = userService.signUpUser(
+                new AppUser(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getEmail(),
+                        request.getPassword(),
+                        UserRole.ADMIN
                 )
         );
 

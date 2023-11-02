@@ -14,7 +14,7 @@ public class LibraryService {
 
     private final BookService bookService;
 
-    public void includeNewBook(LibraryRequest request) {
+    public void includeNewBookToLibrary(LibraryRequest request) {
         bookService.addBookToLibrary(
                 new Book(
                         request.getTitle(),
@@ -24,7 +24,7 @@ public class LibraryService {
         );
     }
 
-    public List<LibraryRequest> viewBook(String title) {
+    public List<LibraryRequest> viewAllBookByTitle(String title) {
         List<Book> books = bookService.viewAllSearchBooks(title);
 
         List<LibraryRequest> libraryRequests = new ArrayList<>();

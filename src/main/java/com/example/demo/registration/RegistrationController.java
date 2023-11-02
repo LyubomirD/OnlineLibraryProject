@@ -10,12 +10,16 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
-    @PostMapping
-    public String register(@RequestBody RegistrationRequest request) {
-        return registrationService.register(request);
+    @PostMapping("/client")
+    public String registerClient(@RequestBody RegistrationRequest request) {
+        return registrationService.registerClient(request);
+    }
+    @PostMapping("/administrator")
+    public String registerAdministrator(@RequestBody RegistrationRequest request) {
+        return registrationService.registerAdministrator(request);
     }
 
-    @GetMapping(path = "confirm")
+    @GetMapping(path = "/confirm")
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
     }
