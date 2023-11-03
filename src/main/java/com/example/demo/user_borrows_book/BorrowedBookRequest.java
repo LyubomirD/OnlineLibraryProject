@@ -1,10 +1,16 @@
 package com.example.demo.user_borrows_book;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class BorrowedBookRequest {
-    private List<Long> bookIds;
+    private String email;
+    private String title;
+    private String author;
 }

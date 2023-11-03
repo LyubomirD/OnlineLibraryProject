@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -41,13 +43,4 @@ public class Book {
         this.author = author;
         this.coAuthor = coAuthor;
     }
-
-    @ManyToMany
-    @JoinTable(
-            name = "users_books",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<AppUser> users;
-
 }

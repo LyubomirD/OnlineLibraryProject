@@ -1,13 +1,13 @@
 package com.example.demo.models.appuser;
 
+import com.example.demo.models.book.Book;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Getter
 @Setter
@@ -88,4 +88,12 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books = new HashSet<>();
 }

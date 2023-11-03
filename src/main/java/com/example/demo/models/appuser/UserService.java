@@ -1,5 +1,6 @@
 package com.example.demo.models.appuser;
 
+import com.example.demo.models.book.Book;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
 import com.example.demo.exceptions.EmailTakenException;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,7 +20,6 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
-
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
@@ -61,4 +62,14 @@ public class UserService implements UserDetailsService {
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }
+
+    public Optional<AppUser> findUserByEmail(String email) {
+        System.out.println("Email:" + userRepository.findByEmail(email));
+        return userRepository.findByEmail(email);
+    }
+
+    public void save(AppUser user) {
+        userRepository.save(user);
+    }
+
 }

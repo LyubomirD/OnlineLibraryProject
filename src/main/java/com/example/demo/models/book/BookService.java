@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -36,4 +37,7 @@ public class BookService {
         return bookList;
     }
 
+    public Optional<Book> findBookByTitleAndAuthor(String title, String author) {
+        return bookRepository.findByTitleAndAuthor(title, author);
+    }
 }
