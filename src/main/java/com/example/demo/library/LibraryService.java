@@ -17,8 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class LibraryService {
 
-    //TODO optimise use check who is logged in!
-
     private final BookService bookService;
 
     public void includeNewBookToLibrary(LibraryRequest request) {
@@ -28,7 +26,6 @@ public class LibraryService {
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch("ADMIN"::equals);
 
-        System.out.println("True or false: "+ isAdmin);
         if (isAdmin) {
             bookService.addBookToLibrary(
                     new Book(
