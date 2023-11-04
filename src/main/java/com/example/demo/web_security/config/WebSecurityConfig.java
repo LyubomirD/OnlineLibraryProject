@@ -1,5 +1,6 @@
 package com.example.demo.web_security.config;
 
+import com.example.demo.models.appuser.UserRole;
 import com.example.demo.models.appuser.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,16 +22,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.httpBasic()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/v*/registration/**").permitAll()
-                    .antMatchers("/api/v*/library/**").permitAll()
-                    .antMatchers("/api/v*/borrow/**").permitAll()
-                .anyRequest()
-                .authenticated().and()
+                // It hasRole("ADMIN") did not work I made my own check
+                .antMatchers("/api/v*/library/**").permitAll()
+                .antMatchers("/api/v*/registration/**").permitAll()
+                .antMatchers("/api/v*/borrow/**").permitAll()
+                .antMatchers("api/v*/login/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin();
-
     }
 
     @Override

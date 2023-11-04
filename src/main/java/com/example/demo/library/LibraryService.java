@@ -4,7 +4,12 @@ import com.example.demo.models.book.Book;
 import com.example.demo.models.book.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +17,33 @@ import java.util.List;
 @AllArgsConstructor
 public class LibraryService {
 
+    //TODO optimise use check who is logged in!
+
     private final BookService bookService;
 
     public void includeNewBookToLibrary(LibraryRequest request) {
-        bookService.addBookToLibrary(
-                new Book(
-                        request.getTitle(),
-                        request.getAuthor(),
-                        request.getCoAuthor()
-                )
-        );
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch("ADMIN"::equals);
+
+        System.out.println("True or false: "+ isAdmin);
+        if (isAdmin) {
+            bookService.addBookToLibrary(
+                    new Book(
+                            request.getTitle(),
+                            request.getAuthor(),
+                            request.getCoAuthor()
+                    )
+            );
+        } else {
+            try {
+                throw new AccessDeniedException("User is not an ADMIN");
+            } catch (AccessDeniedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public List<LibraryRequest> viewAllBookByTitle(String title) {

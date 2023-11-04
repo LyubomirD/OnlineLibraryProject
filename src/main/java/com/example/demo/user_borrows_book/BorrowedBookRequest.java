@@ -10,7 +10,6 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class BorrowedBookRequest {
-    private String email;
     private String title;
     private String author;
 }

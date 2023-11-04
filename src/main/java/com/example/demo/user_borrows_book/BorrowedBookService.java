@@ -7,6 +7,8 @@ import com.example.demo.models.book.Book;
 import com.example.demo.models.book.BookRepository;
 import com.example.demo.models.book.BookService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,32 +23,28 @@ public class BorrowedBookService {
     private final UserService userService;
 
     public Optional<AppUser> addBookToUser(BorrowedBookRequest borrowedBookRequest) {
-        String email = borrowedBookRequest.getEmail();
-        Optional<AppUser> userOptional = userService.findUserByEmail(email);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String title = borrowedBookRequest.getTitle();
-        String author = borrowedBookRequest.getAuthor();
-        Optional<Book> bookOptional = bookService.findBookByTitleAndAuthor(title, author);
+        if (authentication != null) {
+            String email = authentication.getName();
+            Optional<AppUser> userOptional = userService.findUserByEmail(email);
 
-        System.out.println("IF");
+            String title = borrowedBookRequest.getTitle();
+            String author = borrowedBookRequest.getAuthor();
+            Optional<Book> bookOptional = bookService.findBookByTitleAndAuthor(title, author);
 
-        System.out.println("UserOptional: \n" + userOptional);
-        System.out.println("BookOptional: \n" +bookOptional);
-        if (userOptional.isPresent() && bookOptional.isPresent()) {
+            if (userOptional.isPresent() && bookOptional.isPresent()) {
+                AppUser user = userOptional.get();
+                Book book = bookOptional.get();
 
-            System.out.println("INSIDE IF");
+                user.getBooks().add(book);
 
-            AppUser user = userOptional.get();
-            Book book = bookOptional.get();
+                userService.save(user);
 
-            user.getBooks().add(book);
-
-            userService.save(user);
-
-            System.out.println("I MUST HAVE SAVED");
-            return Optional.of(user);
+                return Optional.of(user);
+            }
         }
-        System.out.println("FAIL");
+
         return Optional.empty();
     }
 
