@@ -37,17 +37,18 @@ public class Book {
     private String author;
     private String coAuthor;
 
-    public Book(String title, String author, String coAuthor) {
+    public Book(String title, String author, String coAuthor, Set<Category> categories) {
         this.title = title;
         this.author = author;
         this.coAuthor = coAuthor;
+        this.categories = categories;
     }
-//
-//    @ManyToMany
-//    @JoinTable(
-//            name = "book_categories",
-//            joinColumns = @JoinColumn(name = "book_id"),
-//            inverseJoinColumns = @JoinColumn(name = "category_id")
-//    )
-//    private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 }

@@ -33,5 +33,4 @@ public class Category {
     public Category(String genre) {
         this.genre = genre;
     }
-
 }

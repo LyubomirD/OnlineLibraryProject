@@ -11,12 +11,12 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category findOrCreateCategory(String genre) {
-        Optional<Category> existingCategory = categoryRepository.findByGenre(genre);
+    public Category findOrCreateCategory(Category category) {
+        Optional<Category> existingCategory = categoryRepository.findByGenreIgnoreCase(category.getGenre());
 
         return existingCategory.orElseGet(() -> {
             Category newCategory = new Category();
-            newCategory.setGenre(genre);
+            newCategory.setGenre(category.getGenre());
             return categoryRepository.save(newCategory);
         });
     }
