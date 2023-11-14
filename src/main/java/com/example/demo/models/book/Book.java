@@ -1,6 +1,6 @@
 package com.example.demo.models.book;
 
-import com.example.demo.models.appuser.AppUser;
+import com.example.demo.models.categories.Category;
 import com.sun.istack.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -38,12 +37,17 @@ public class Book {
     private String author;
     private String coAuthor;
 
-    private String genre;
-
-    public Book(String title, String author, String coAuthor, String genre) {
+    public Book(String title, String author, String coAuthor) {
         this.title = title;
         this.author = author;
         this.coAuthor = coAuthor;
-        this.genre = genre;
     }
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "book_categories",
+//            joinColumns = @JoinColumn(name = "book_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id")
+//    )
+//    private Set<Category> categories = new HashSet<>();
 }

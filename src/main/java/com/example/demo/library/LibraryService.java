@@ -2,6 +2,7 @@ package com.example.demo.library;
 
 import com.example.demo.models.book.Book;
 import com.example.demo.models.book.BookService;
+import com.example.demo.models.categories.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,8 +33,7 @@ public class LibraryService {
                     new Book(
                             request.getTitle(),
                             request.getAuthor(),
-                            request.getCoAuthor(),
-                            request.getGenre()
+                            request.getCoAuthor()
                     )
             );
         } else {
@@ -47,33 +48,23 @@ public class LibraryService {
     public List<LibraryRequest> viewAllBookByTitle(String title) {
         List<Book> bookList = bookService.viewAllSearchBooks(title);
 
-        List<LibraryRequest> libraryRequests = new ArrayList<>();
-
-        for (Book book : bookList) {
-            LibraryRequest request = new LibraryRequest(
-                    book.getTitle(),
-                    book.getAuthor(),
-                    book.getCoAuthor(),
-                    book.getGenre()
-            );
-
-            libraryRequests.add(request);
-        }
-
-        return libraryRequests;
+        return getLibraryRequests(bookList);
     }
 
     public List<LibraryRequest> viewAllBooks() {
         List<Book> bookList = bookService.viewAllBooks();
 
+        return getLibraryRequests(bookList);
+    }
+
+    private List<LibraryRequest> getLibraryRequests(List<Book> bookList) {
         List<LibraryRequest> libraryRequests = new ArrayList<>();
 
         for (Book book : bookList) {
             LibraryRequest request = new LibraryRequest(
                     book.getTitle(),
                     book.getAuthor(),
-                    book.getCoAuthor(),
-                    book.getGenre()
+                    book.getCoAuthor()
             );
 
             libraryRequests.add(request);
@@ -81,4 +72,5 @@ public class LibraryService {
 
         return libraryRequests;
     }
+
 }

@@ -1,11 +1,16 @@
 package com.example.demo.models.book;
 
 import com.example.demo.exceptions.BookNotFoundException;
+import com.example.demo.models.categories.Category;
+import com.example.demo.models.categories.CategoryGenre;
+import com.example.demo.models.categories.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
