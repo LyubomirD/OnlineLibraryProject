@@ -40,4 +40,8 @@ public class BookService {
     public Optional<Book> findBookByTitleAndAuthor(String title, String author) {
         return bookRepository.findByTitleAndAuthor(title, author);
     }
+
+    public List<Book> viewAllBooks() {
+        return bookRepository.findAll();
+    }
 }

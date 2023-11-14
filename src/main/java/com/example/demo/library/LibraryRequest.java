@@ -13,4 +13,6 @@ public class LibraryRequest {
     private final String title;
     private final String author;
     private final String coAuthor;
+
+    private final String genre;
 }

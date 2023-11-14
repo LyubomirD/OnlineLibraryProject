@@ -1,4 +1,4 @@
-package com.example.demo.registration.token;
+package com.example.demo.models.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,6 +21,5 @@ public interface ConfirmationTokenRepository
     @Query("UPDATE ConfirmationToken c " +
             "SET c.confirmedAt = ?2 " +
             "WHERE c.token = ?1")
-    int updateConfirmedAt(String token,
-                          LocalDateTime confirmedAt);
+    int updateConfirmedAt(String token, LocalDateTime confirmedAt);
 }

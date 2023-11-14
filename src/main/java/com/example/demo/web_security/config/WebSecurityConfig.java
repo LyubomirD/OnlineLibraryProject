@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // It hasRole("ADMIN") did not work I made my own check
                 .antMatchers("/api/v*/library/**").permitAll()
                 .antMatchers("/api/v*/registration/**").permitAll()
-                .antMatchers("/api/v*/borrow/**").permitAll()
+                .antMatchers("/api/v*/book-borrow/**").permitAll()
                 .antMatchers("api/v*/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

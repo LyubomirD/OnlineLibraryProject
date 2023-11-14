@@ -1,4 +1,4 @@
-package com.example.demo.registration.token;
+package com.example.demo.models.token;
 
 import com.example.demo.models.appuser.AppUser;
 import lombok.Getter;
@@ -37,13 +37,6 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
-    @ManyToOne
-    @JoinColumn(
-            nullable = false,
-            name = "app_user_id"
-    )
-    private AppUser appUser;
-
     public ConfirmationToken(String token,
                              LocalDateTime createdAt,
                              LocalDateTime expiresAt,
@@ -53,4 +46,12 @@ public class ConfirmationToken {
         this.expiresAt = expiresAt;
         this.appUser = appUser;
     }
+
+
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "app_user_id"
+    )
+    private AppUser appUser;
 }

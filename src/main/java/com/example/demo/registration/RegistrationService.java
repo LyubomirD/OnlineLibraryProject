@@ -3,8 +3,10 @@ package com.example.demo.registration;
 import com.example.demo.models.appuser.AppUser;
 import com.example.demo.models.appuser.UserRole;
 import com.example.demo.models.appuser.UserService;
-import com.example.demo.registration.token.ConfirmationToken;
-import com.example.demo.registration.token.ConfirmationTokenService;
+import com.example.demo.models.token.ConfirmationToken;
+import com.example.demo.models.token.ConfirmationTokenService;
+import com.example.demo.validators.EmailValidator;
+import com.example.demo.validators.PasswordValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +19,15 @@ public class RegistrationService {
 
     private final UserService userService;
     private final EmailValidator emailValidator;
+    private final PasswordValidator passwordValidator;
     private final ConfirmationTokenService confirmationTokenService;
 
     public String registerClient(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
+        boolean isValidPassword = passwordValidator.test(request.getPassword());
 
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
+        if (!isValidEmail && !isValidPassword) {
+            throw new IllegalStateException("Email and password are not valid!");
         }
 
         String token = userService.signUpUser(
@@ -41,9 +45,10 @@ public class RegistrationService {
 
     public String registerAdministrator(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
+        boolean isValidPassword = passwordValidator.test(request.getPassword());
 
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
+        if (!isValidEmail && !isValidPassword) {
+            throw new IllegalStateException("Email and password are not valid!");
         }
 
         String token = userService.signUpUser(

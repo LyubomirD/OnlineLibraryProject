@@ -38,9 +38,12 @@ public class Book {
     private String author;
     private String coAuthor;
 
-    public Book(String title, String author, String coAuthor) {
+    private String genre;
+
+    public Book(String title, String author, String coAuthor, String genre) {
         this.title = title;
         this.author = author;
         this.coAuthor = coAuthor;
+        this.genre = genre;
     }
 }

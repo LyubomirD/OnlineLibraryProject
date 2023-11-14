@@ -31,7 +31,8 @@ public class LibraryService {
                     new Book(
                             request.getTitle(),
                             request.getAuthor(),
-                            request.getCoAuthor()
+                            request.getCoAuthor(),
+                            request.getGenre()
                     )
             );
         } else {
@@ -44,16 +45,37 @@ public class LibraryService {
     }
 
     public List<LibraryRequest> viewAllBookByTitle(String title) {
-        List<Book> books = bookService.viewAllSearchBooks(title);
+        List<Book> bookList = bookService.viewAllSearchBooks(title);
 
         List<LibraryRequest> libraryRequests = new ArrayList<>();
 
-        for (Book book : books) {
+        for (Book book : bookList) {
             LibraryRequest request = new LibraryRequest(
                     book.getTitle(),
                     book.getAuthor(),
-                    book.getCoAuthor()
+                    book.getCoAuthor(),
+                    book.getGenre()
             );
+
+            libraryRequests.add(request);
+        }
+
+        return libraryRequests;
+    }
+
+    public List<LibraryRequest> viewAllBooks() {
+        List<Book> bookList = bookService.viewAllBooks();
+
+        List<LibraryRequest> libraryRequests = new ArrayList<>();
+
+        for (Book book : bookList) {
+            LibraryRequest request = new LibraryRequest(
+                    book.getTitle(),
+                    book.getAuthor(),
+                    book.getCoAuthor(),
+                    book.getGenre()
+            );
+
             libraryRequests.add(request);
         }
 

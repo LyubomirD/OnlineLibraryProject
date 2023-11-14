@@ -17,12 +17,17 @@ public class LibraryController {
 
     private final LibraryService libraryService;
 
+    @GetMapping
+    public List<LibraryRequest> viewAllBooks() {
+        return libraryService.viewAllBooks();
+    }
+
     @PostMapping("add-book")
     public void includeNewBookToLibrary(@RequestBody LibraryRequest request) {
         libraryService.includeNewBookToLibrary(request);
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("search/{title}")
     public List<LibraryRequest> viewAllBookByTitleFromLibrary(@PathVariable String title) {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Not existing title");

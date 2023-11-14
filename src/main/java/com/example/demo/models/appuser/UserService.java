@@ -1,8 +1,7 @@
 package com.example.demo.models.appuser;
 
-import com.example.demo.models.book.Book;
-import com.example.demo.registration.token.ConfirmationToken;
-import com.example.demo.registration.token.ConfirmationTokenService;
+import com.example.demo.models.token.ConfirmationToken;
+import com.example.demo.models.token.ConfirmationTokenService;
 import com.example.demo.exceptions.EmailTakenException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

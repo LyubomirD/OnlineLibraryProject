@@ -1,4 +1,4 @@
-package com.example.demo.registration;
+package com.example.demo.validators;
 
 import com.example.demo.exceptions.EmailValidationException;
 import org.springframework.stereotype.Service;
