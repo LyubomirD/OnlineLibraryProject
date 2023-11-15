@@ -6,6 +6,7 @@ import com.example.demo.models.categories.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +19,19 @@ public class BookService {
     private final BookRepository bookRepository;
     private final CategoryService categoryService;
 
-    public void addNewBook(Book book) {
+    private boolean bookExists(Book book) {
         boolean bookExisting = bookRepository
                 .findByTitleAndAuthor(book.getTitle(), book.getAuthor())
                 .isPresent();
 
         if (bookExisting) {
-            throw new RuntimeException("Book exists");
+            return true;
         }
-        
+
+        return false;
+    }
+
+    private void categoriesSomething(Book book) {
         Set<Category> categories = new HashSet<>();
 
         for (Category category : book.getCategories()) {
@@ -35,27 +40,37 @@ public class BookService {
         }
 
         book.setCategories(categories);
+    }
+
+    public void addNewBook(Book book) {
+        if (bookExists(book)) {
+            throw new RuntimeException("Book exists");
+        }
 
         bookRepository.save(book);
     }
 
+    public void updateExistingBook(Long book_id, Book book) {
+        Book existingBook = bookRepository.findById(book_id).orElseThrow(
+                () -> new EntityNotFoundException("Book not found with ID: " + book_id));
 
-    public List<Book> viewAllSearchBooks(String title) {
-        List<Book> bookList = bookRepository.findByTitle(title);
+        existingBook.setTitle(book.getTitle());
+        existingBook.setAuthor(book.getAuthor());
+        existingBook.setCoAuthor(book.getCoAuthor());
+        categoriesSomething(existingBook);
 
-        if (bookList.isEmpty()) {
+        bookRepository.save(existingBook);
+    }
 
-            throw new BookNotFoundException("Book with that title does not exists");
+    public void deleteBook(Long bookId) {
+        if (bookRepository.findById(bookId).isEmpty()) {
+            throw new RuntimeException("Book does NOT exists");
         }
 
-        return bookList;
+        bookRepository.deleteById(bookId);
     }
 
     public Optional<Book> findBookByTitleAndAuthor(String title, String author) {
         return bookRepository.findByTitleAndAuthor(title, author);
-    }
-
-    public List<Book> viewAllBooks() {
-        return bookRepository.findAll();
     }
 }

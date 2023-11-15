@@ -18,8 +18,8 @@ public class BorrowedBookController {
         return borrowedBookService.addBookToUser(request);
     }
 
-    @DeleteMapping("/remove")
+    @PutMapping("/remove")
     public Optional<AppUser> removeBorrowedBook(@RequestBody BorrowedBookRequest request) {
-        return borrowedBookService.removeBookToUser(request);
+        return borrowedBookService.removeBookFromUser(request);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.library;
+package com.example.demo.library.client;
 
 import com.example.demo.models.categories.Category;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class LibraryRequest {
+public class LibraryUserRequest {
     private final String title;
     private final String author;
     private final String coAuthor;
