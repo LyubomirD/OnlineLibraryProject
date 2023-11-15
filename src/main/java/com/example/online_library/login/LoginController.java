@@ -20,15 +20,10 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<Optional<AppUser>> loginUser() {
-        String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<AppUser> logged = loginService.loginUser();
 
-        if (authenticatedUsername == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Optional<AppUser> logged = loginService.loginUser(authenticatedUsername);
         if (logged.isEmpty()) {
-            return ResponseEntity.ok(Optional.empty());
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(logged);
