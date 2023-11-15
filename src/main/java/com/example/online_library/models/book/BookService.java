@@ -29,7 +29,7 @@ public class BookService {
         return false;
     }
 
-    private void categoriesSomething(Book book) {
+    private void saveOrCreateCategory(Book book) {
         Set<Category> categories = new HashSet<>();
 
         for (Category category : book.getCategories()) {
@@ -45,6 +45,7 @@ public class BookService {
             throw new RuntimeException("Book exists");
         }
 
+        saveOrCreateCategory(book);
         bookRepository.save(book);
     }
 
@@ -55,7 +56,7 @@ public class BookService {
         existingBook.setTitle(book.getTitle());
         existingBook.setAuthor(book.getAuthor());
         existingBook.setCoAuthor(book.getCoAuthor());
-        categoriesSomething(existingBook);
+        saveOrCreateCategory(existingBook);
 
         bookRepository.save(existingBook);
     }
