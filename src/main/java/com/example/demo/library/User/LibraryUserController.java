@@ -1,4 +1,4 @@
-package com.example.demo.library.client;
+package com.example.demo.library.User;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

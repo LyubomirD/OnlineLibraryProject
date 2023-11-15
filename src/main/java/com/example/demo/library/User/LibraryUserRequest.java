@@ -1,4 +1,4 @@
-package com.example.demo.library.client;
+package com.example.demo.library.User;
 
 import com.example.demo.models.categories.Category;
 import lombok.AllArgsConstructor;
