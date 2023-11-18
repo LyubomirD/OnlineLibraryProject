@@ -1,5 +1,6 @@
 package com.example.online_library.library.user;
 
+import com.example.online_library.library.LibraryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +17,12 @@ public class LibraryUserController {
     private final LibraryUserService libraryUserService;
 
     @GetMapping
-    public List<LibraryUserRequest> viewAllBooks() {
+    public List<LibraryRequest> viewAllBooks() {
         return libraryUserService.viewAllBooks();
     }
 
     @GetMapping("search/{title}")
-    public List<LibraryUserRequest> viewAllBookByTitleFromLibrary(@PathVariable String title) {
+    public List<LibraryRequest> viewAllBookByTitleFromLibrary(@PathVariable String title) {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Not existing title");
         }

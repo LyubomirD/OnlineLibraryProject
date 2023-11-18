@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -14,8 +15,9 @@ import java.util.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails {
+public class AppUser implements UserDetails, Serializable {
 
+    //TODO I havent added before Serializable if there is an error is from it
     @SequenceGenerator(
             name = "app_user_sequence",
             sequenceName = "user_sequence",

@@ -1,4 +1,4 @@
-package com.example.online_library.library.admin;
+package com.example.online_library.library;
 
 import com.example.online_library.models.categories.Category;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class LibraryAdminRequest {
+public class LibraryRequest {
     private final String title;
     private final String author;
     private final String coAuthor;
