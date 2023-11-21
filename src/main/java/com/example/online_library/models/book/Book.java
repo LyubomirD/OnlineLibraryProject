@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -44,11 +43,10 @@ public class Book {
         this.categories = categories;
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_categories",
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "book_category",
             joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
+
 }

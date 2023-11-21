@@ -1,5 +1,6 @@
 package com.example.online_library.models.book;
 
+import com.example.online_library.exceptions.BookNotFoundException;
 import com.example.online_library.models.categories.Category;
 import com.example.online_library.models.categories.CategoryService;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class BookService {
+public class BookAdminService {
 
     private final BookRepository bookRepository;
     private final CategoryService categoryService;
@@ -40,6 +41,16 @@ public class BookService {
         book.setCategories(categories);
     }
 
+    public Long findBookId(String title, String author) {
+        Optional<Book> book = bookRepository.findByTitleAndAuthor(title, author);
+
+        if (book.isEmpty()) {
+            throw new BookNotFoundException("Book does not exists");
+        }
+
+        return book.get().getId();
+    }
+
     public void addNewBook(Book book) {
         if (bookExists(book)) {
             throw new RuntimeException("Book exists");
@@ -49,17 +60,20 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public void updateExistingBook(Long book_id, Book book) {
+    public void updateExistingBook(Long book_id, Book updatedBook) {
         Book existingBook = bookRepository.findById(book_id).orElseThrow(
                 () -> new EntityNotFoundException("Book not found with ID: " + book_id));
 
-        existingBook.setTitle(book.getTitle());
-        existingBook.setAuthor(book.getAuthor());
-        existingBook.setCoAuthor(book.getCoAuthor());
-        saveOrCreateCategory(existingBook);
+        existingBook.setTitle(updatedBook.getTitle());
+        existingBook.setAuthor(updatedBook.getAuthor());
+        existingBook.setCoAuthor(updatedBook.getCoAuthor());
+        saveOrCreateCategory(updatedBook);
+
+        existingBook.setCategories(updatedBook.getCategories());
 
         bookRepository.save(existingBook);
     }
+
 
     public void deleteBook(Long bookId) {
         if (bookRepository.findById(bookId).isEmpty()) {
@@ -69,7 +83,10 @@ public class BookService {
         bookRepository.deleteById(bookId);
     }
 
+
+    // Method needed from BorrowedBookService
     public Optional<Book> findBookByTitleAndAuthor(String title, String author) {
         return bookRepository.findByTitleAndAuthor(title, author);
     }
+
 }

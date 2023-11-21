@@ -20,4 +20,8 @@ public class CategoryService {
             return categoryRepository.save(newCategory);
         });
     }
+
+    public void save(Category category) {
+        categoryRepository.save(category);
+    }
 }

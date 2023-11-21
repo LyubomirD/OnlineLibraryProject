@@ -3,7 +3,7 @@ package com.example.online_library.user_borrows_book;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
-import com.example.online_library.models.book.BookService;
+import com.example.online_library.models.book.BookAdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BorrowedBookService {
 
-    private final BookService bookService;
+    private final BookAdminService bookAdminService;
     private final UserService userService;
 
     private Optional<AppUser> modifyBookAction(BorrowedBookRequest request, boolean addBook) {
@@ -27,7 +27,7 @@ public class BorrowedBookService {
 
             String title = request.getTitle();
             String author = request.getAuthor();
-            Optional<Book> bookOptional = bookService.findBookByTitleAndAuthor(title, author);
+            Optional<Book> bookOptional = bookAdminService.findBookByTitleAndAuthor(title, author);
 
             if (userOptional.isPresent() && bookOptional.isPresent()) {
                 AppUser user = userOptional.get();

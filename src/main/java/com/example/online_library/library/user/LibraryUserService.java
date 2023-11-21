@@ -15,14 +15,14 @@ public class LibraryUserService {
 
     private final BookSearchService bookSearchService;
 
-    public List<LibraryRequest> viewAllBookByTitle(String title) {
-        List<Book> bookList = bookSearchService.viewAllSearchBooks(title);
+    public List<LibraryRequest> viewAllBooks() {
+        List<Book> bookList = bookSearchService.viewAllBooks();
 
         return getLibraryRequests(bookList);
     }
 
-    public List<LibraryRequest> viewAllBooks() {
-        List<Book> bookList = bookSearchService.viewAllBooks();
+    public List<LibraryRequest> viewAllBookByTitle(String title) {
+        List<Book> bookList = bookSearchService.viewAllSearchBooks(title);
 
         return getLibraryRequests(bookList);
     }
