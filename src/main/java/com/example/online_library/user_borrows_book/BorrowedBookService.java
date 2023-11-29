@@ -1,5 +1,6 @@
 package com.example.online_library.user_borrows_book;
 
+import com.example.online_library.exceptions.EmailValidationException;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
@@ -10,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +19,18 @@ public class BorrowedBookService {
 
     private final BookAdminService bookAdminService;
     private final UserService userService;
+
+    public Set<Book> viewAllUsersBook() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new EmailValidationException("Email is not validated of not registrated");
+        }
+        String email = authentication.getName();
+        Optional<AppUser> user = userService.findUserByEmail(email);
+
+        return user.get().getBooks();
+    }
 
     private Optional<AppUser> modifyBookAction(BorrowedBookRequest request, boolean addBook) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,6 +69,5 @@ public class BorrowedBookService {
     public Optional<AppUser> removeBookFromUser(BorrowedBookRequest request) {
         return modifyBookAction(request, false);
     }
-
 
 }

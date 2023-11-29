@@ -19,15 +19,4 @@ public class LibraryUserController {
     public List<LibraryRequest> viewAllBooks() {
         return libraryUserService.viewAllBooks();
     }
-
-
-    //TODO I might not need this method because ts has a method to look for Objects, I am keeping it in case for now
-//    @GetMapping("search/{title}")
-//    public List<LibraryRequest> viewAllBookByTitleFromLibrary(@PathVariable String title) {
-//        if (title == null || title.isEmpty()) {
-//            throw new IllegalArgumentException("Not existing title");
-//        }
-//
-//        return libraryUserService.viewAllBookByTitle(title);
-//    }
 }

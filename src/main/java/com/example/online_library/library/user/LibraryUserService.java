@@ -21,12 +21,6 @@ public class LibraryUserService {
         return getLibraryRequests(bookList);
     }
 
-    public List<LibraryRequest> viewAllBookByTitle(String title) {
-        List<Book> bookList = bookSearchService.viewAllSearchBooks(title);
-
-        return getLibraryRequests(bookList);
-    }
-
     private List<LibraryRequest> getLibraryRequests(List<Book> bookList) {
         List<LibraryRequest> libraryRequests = new ArrayList<>();
 
