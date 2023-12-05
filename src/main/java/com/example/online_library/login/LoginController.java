@@ -19,7 +19,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader) {
         String[] credentials = getCredentials(authHeader);
 
         if (credentials != null && credentials.length == 2) {
@@ -27,11 +27,11 @@ public class LoginController {
             String password = credentials[1];
 
             if (loginService.authenticateUser(username, password)) {
-                return ResponseEntity.ok("Login successful");
+                return ResponseEntity.ok("{\"message\":\"Login successful\"}");
             }
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\":\"Invalid credentials\"}");
     }
 
     private String[] getCredentials(String authHeader) {
