@@ -38,7 +38,7 @@ public class LibraryAdminService {
     }
 
     public void includeNewBookToLibrary(LibraryRequest request) {
-        //checkUserOrThrowException();
+        checkUserOrThrowException();
 
         bookAdminService.addNewBook(
                 new Book(

@@ -3,7 +3,6 @@ package com.example.online_library.login;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,14 +13,16 @@ public class LoginService {
 
     private final UserService userService;
 
-    private String getAuthenticatedUsername() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
+    public void loginUser(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
 
-    public Optional<AppUser> loginUser() {
-        String authenticatedUsername = getAuthenticatedUsername();
+        Optional<AppUser> authenticatedUser = userService.findUserByEmailAndPassword(email, password);
 
-        return Optional.ofNullable(authenticatedUsername)
-                .flatMap(userService::findUserByEmail);
+        if (authenticatedUser.isPresent()) {
+            System.out.println("User authenticated successfully");
+        } else {
+            System.out.println("Authentication failed");
+        }
     }
 }

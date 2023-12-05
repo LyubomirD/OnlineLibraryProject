@@ -24,16 +24,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic()
                 .and()
                 .csrf().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v*/library-admin/**").permitAll()
                 .antMatchers("/api/v*/library-user/**").permitAll()
                 .antMatchers("/api/v*/registration/**").permitAll()
                 .antMatchers("/api/v*/book-borrow/**").permitAll()
-                .antMatchers("api/v*/login/**").permitAll()
-                .antMatchers("api/v*/logout/**").permitAll()
+                .antMatchers("/api/v1/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/api/v1/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
 
     @Override
