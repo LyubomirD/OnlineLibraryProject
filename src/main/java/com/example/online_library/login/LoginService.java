@@ -3,6 +3,7 @@ package com.example.online_library.login;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,17 +13,17 @@ import java.util.Optional;
 public class LoginService {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public void loginUser(LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
+    public boolean authenticateUser(String username, String password) {
+        Optional<AppUser> userOptional = userService.findUserByEmail(username);
 
-        Optional<AppUser> authenticatedUser = userService.findUserByEmailAndPassword(email, password);
+        if (userOptional.isPresent()) {
+            AppUser appUser = userOptional.get();
 
-        if (authenticatedUser.isPresent()) {
-            System.out.println("User authenticated successfully");
-        } else {
-            System.out.println("Authentication failed");
+            return passwordEncoder.matches(password, appUser.getPassword());
         }
+
+        return false;
     }
 }

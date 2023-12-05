@@ -31,17 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v*/library-user/**").permitAll()
                 .antMatchers("/api/v*/registration/**").permitAll()
                 .antMatchers("/api/v*/book-borrow/**").permitAll()
-                .antMatchers("/api/v1/login").permitAll()
+                .antMatchers("/api/v*/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/api/v1/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+                .formLogin();
     }
 
     @Override
@@ -57,4 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(userService);
         return provider;
     }
+
+
 }
+
