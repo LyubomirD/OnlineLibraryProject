@@ -33,7 +33,6 @@ public class LibraryAdminService {
 
 
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
-        // Extract the cookie from the request
         Cookie[] cookies = httpServletRequest.getCookies();
         String role = null;
 
@@ -41,8 +40,8 @@ public class LibraryAdminService {
             for (Cookie cookie : cookies) {
                 if ("SESSION_ID".equals(cookie.getName())) {
                     String[] cookieParts = cookie.getValue().split(":");
-                    if (cookieParts.length > 1) {
-                        role = cookieParts[1];
+                    if (cookieParts.length > 2) {
+                        role = cookieParts[2];
                         break;
                     }
                 }
@@ -53,6 +52,7 @@ public class LibraryAdminService {
             throw new AdminAccessDeniedException("Access denied, user not administrator");
         }
     }
+
 
     public Long getBookId(String title, String author) {
         //checkUserOrThrowException();

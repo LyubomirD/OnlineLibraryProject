@@ -12,6 +12,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping(path = "api/v1/login")
 @AllArgsConstructor
 public class LoginController {
@@ -27,18 +28,21 @@ public class LoginController {
             String password = credentials[1];
 
             if (loginService.authenticateUser(username, password)) {
-                // Generate a random session ID (you may use a more robust method)
                 String sessionId = generateRandomSessionId();
-                boolean isAdmin = loginService.isUserAdmin(username); // Assuming you have a method to check if the user is an admin
+                boolean isAdmin = loginService.isUserAdmin(username);
 
-                // Include role information in the cookie value
-                String cookieValue = sessionId + ":" + (isAdmin ? "ADMIN" : "USER");
-
+                String cookieValue = sessionId + ":" + username + ":" + (isAdmin ? "ADMIN" : "USER");
                 Cookie sessionCookie = new Cookie("SESSION_ID", cookieValue);
+
                 sessionCookie.setMaxAge(300); // 5 minutes
                 sessionCookie.setHttpOnly(true);
                 sessionCookie.setPath("/");
+
+                System.out.println("Setting cookie: " + sessionCookie.getName() + "=" + sessionCookie.getValue());
+                System.out.println("Cookie value: " + sessionId);
+                System.out.println("Cookie session: " + sessionCookie);
                 response.addCookie(sessionCookie);
+
                 return ResponseEntity.ok("{\"message\":\"Login successful\"}");
             }
         }

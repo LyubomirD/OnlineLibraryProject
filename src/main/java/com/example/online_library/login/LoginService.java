@@ -1,6 +1,7 @@
 package com.example.online_library.login;
 
 import com.example.online_library.models.appuser.AppUser;
+import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +29,6 @@ public class LoginService {
     }
 
     public boolean isUserAdmin(String username) {
-        return userService.findUserByEmailAndRoleAdmin(username);
+        return userService.findUserByEmailAndRoleAdmin(username, UserRole.ADMIN);
     }
 }

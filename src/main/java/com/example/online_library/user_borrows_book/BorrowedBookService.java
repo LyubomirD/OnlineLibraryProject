@@ -24,7 +24,7 @@ public class BorrowedBookService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            throw new EmailValidationException("Email is not validated of not registrated");
+            throw new EmailValidationException("Email is not validated of not registered");
         }
         String email = authentication.getName();
         Optional<AppUser> user = userService.findUserByEmail(email);

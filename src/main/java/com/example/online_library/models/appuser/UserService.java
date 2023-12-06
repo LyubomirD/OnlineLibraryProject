@@ -71,8 +71,8 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Boolean findUserByEmailAndRoleAdmin(String email) {
-        return userRepository.existsByEmailAndUserRole(email, UserRole.ADMIN);
+    public Boolean findUserByEmailAndRoleAdmin(String email, UserRole role) {
+        return userRepository.existsByEmailAndUserRole(email, role);
     }
 
 }
