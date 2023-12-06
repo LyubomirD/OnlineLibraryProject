@@ -25,3 +25,15 @@
 //        }
 //    }
 //}
+// For removing the session
+// @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletResponse response) {
+//        // Invalidate the session by clearing the session cookie
+//        Cookie sessionCookie = new Cookie("SESSION_ID", null);
+//        sessionCookie.setMaxAge(0);
+//        sessionCookie.setPath("/");
+//        response.addCookie(sessionCookie);
+//
+//        return ResponseEntity.ok("{\"message\":\"Logout successful\"}");
+//    }
+//

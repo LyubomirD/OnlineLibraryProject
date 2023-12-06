@@ -1,16 +1,15 @@
 package com.example.online_library.login;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/login")
@@ -19,7 +18,8 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader,
+                                   HttpServletResponse response) {
         String[] credentials = getCredentials(authHeader);
 
         if (credentials != null && credentials.length == 2) {
@@ -27,6 +27,18 @@ public class LoginController {
             String password = credentials[1];
 
             if (loginService.authenticateUser(username, password)) {
+                // Generate a random session ID (you may use a more robust method)
+                String sessionId = generateRandomSessionId();
+                boolean isAdmin = loginService.isUserAdmin(username); // Assuming you have a method to check if the user is an admin
+
+                // Include role information in the cookie value
+                String cookieValue = sessionId + ":" + (isAdmin ? "ADMIN" : "USER");
+
+                Cookie sessionCookie = new Cookie("SESSION_ID", cookieValue);
+                sessionCookie.setMaxAge(300); // 5 minutes
+                sessionCookie.setHttpOnly(true);
+                sessionCookie.setPath("/");
+                response.addCookie(sessionCookie);
                 return ResponseEntity.ok("{\"message\":\"Login successful\"}");
             }
         }
@@ -42,5 +54,9 @@ public class LoginController {
             return credentials.split(":", 2);
         }
         return null;
+    }
+
+    private String generateRandomSessionId() {
+        return UUID.randomUUID().toString();
     }
 }

@@ -4,6 +4,8 @@ import com.example.online_library.library.LibraryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(path = "api/v1/library-admin")
 @AllArgsConstructor
@@ -17,8 +19,8 @@ public class LibraryAdminController {
     }
 
     @PostMapping("add-book")
-    public void includeNewBookToLibrary(@RequestBody LibraryRequest request) {
-        libraryAdminService.includeNewBookToLibrary(request);
+    public void includeNewBookToLibrary(@RequestBody LibraryRequest request, HttpServletRequest httpServletRequest) {
+        libraryAdminService.includeNewBookToLibrary(request, httpServletRequest);
     }
 
     @PutMapping("update-book/{book_id}")

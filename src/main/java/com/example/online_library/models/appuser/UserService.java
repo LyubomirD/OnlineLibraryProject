@@ -71,8 +71,8 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Optional<AppUser> findUserByEmailAndPassword(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+    public Boolean findUserByEmailAndRoleAdmin(String email) {
+        return userRepository.existsByEmailAndUserRole(email, UserRole.ADMIN);
     }
 
 }

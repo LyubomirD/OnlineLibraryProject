@@ -26,4 +26,8 @@ public class LoginService {
 
         return false;
     }
+
+    public boolean isUserAdmin(String username) {
+        return userService.findUserByEmailAndRoleAdmin(username);
+    }
 }
