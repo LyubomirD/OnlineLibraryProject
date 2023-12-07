@@ -26,7 +26,7 @@ public class LoginController {
     private static final int SESSION_DURATION_SECONDS = 300; // 5 minutes
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader,
+    public ResponseEntity<String> login(@RequestHeader("Authorization") String authHeader,
                                    HttpServletResponse response) {
         String[] credentials = getCredentials(authHeader);
 

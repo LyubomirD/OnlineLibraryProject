@@ -22,23 +22,19 @@ public class LoginService {
     public boolean authenticateUser(String username, String password) {
         Optional<AppUser> userOptional = userService.findUserByEmail(username);
 
-        if (userOptional.isPresent()) {
-            AppUser appUser = userOptional.get();
-
-            if (passwordEncoder.matches(password, appUser.getPassword())) {
-                return true; // Authentication successful
-            } else {
-                // Incorrect password
-                // Log this event for auditing or debugging purposes
-                log.warn("Authentication failure for user '{}': Incorrect password", username);
-            }
-        } else {
-            // User not found
-            // Log this event for auditing or debugging purposes
+        if (userOptional.isEmpty()) {
             log.warn("Authentication failure: User '{}' not found", username);
+            return false;
         }
 
-        return false; // Authentication failed
+        AppUser appUser = userOptional.get();
+
+        if (!(passwordEncoder.matches(password, appUser.getPassword()))) {
+            log.warn("Authentication failure for user '{}': Incorrect password", username);
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isUserAdmin(String username) {
