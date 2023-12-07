@@ -15,22 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class LibraryAdminService {
 
-    //TODO uncomment the checkUserOrThrowException when frontend registration is complete
     private final BookAdminService bookAdminService;
-
-//    private boolean isAdmin() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        return authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .anyMatch("ADMIN"::equals);
-//    }
-//
-//    private void checkUserOrThrowException() {
-//        if (!isAdmin()) {
-//            throw new AdminAccessDeniedException("Access denied, user not administrator");
-//        }
-//    }
-
 
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
@@ -38,7 +23,7 @@ public class LibraryAdminService {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("SESSION_ID".equals(cookie.getName())) {
+                if ("MY_SESSION_ID".equals(cookie.getName())) {
                     String[] cookieParts = cookie.getValue().split(":");
                     if (cookieParts.length > 2) {
                         role = cookieParts[2];
@@ -54,8 +39,8 @@ public class LibraryAdminService {
     }
 
 
-    public Long getBookId(String title, String author) {
-        //checkUserOrThrowException();
+    public Long getBookId(String title, String author, HttpServletRequest httpServletRequest) {
+        checkUserOrThrowException(httpServletRequest);
 
         return bookAdminService.findBookId(title, author);
     }
@@ -73,8 +58,8 @@ public class LibraryAdminService {
         );
     }
 
-    public void changeExistingBookInform(Long book_id, LibraryRequest request) {
-        //checkUserOrThrowException();
+    public void changeExistingBookInform(Long book_id, LibraryRequest request, HttpServletRequest httpServletRequest) {
+        checkUserOrThrowException(httpServletRequest);
 
         bookAdminService.updateExistingBook(
                 book_id,
@@ -87,8 +72,8 @@ public class LibraryAdminService {
         );
     }
 
-    public void deleteBookFromLibrary(Long book_id) {
-        //checkUserOrThrowException();
+    public void deleteBookFromLibrary(Long book_id, HttpServletRequest httpServletRequest) {
+        checkUserOrThrowException(httpServletRequest);
 
         bookAdminService.deleteBook(book_id);
     }

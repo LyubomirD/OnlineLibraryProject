@@ -1,9 +1,14 @@
 package com.example.online_library.login;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +17,13 @@ import java.util.Base64;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping(path = "api/v1/login")
 @AllArgsConstructor
 public class LoginController {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final LoginService loginService;
+    private static final int SESSION_DURATION_SECONDS = 300; // 5 minutes
 
     @PostMapping
     public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader,
@@ -32,15 +39,15 @@ public class LoginController {
                 boolean isAdmin = loginService.isUserAdmin(username);
 
                 String cookieValue = sessionId + ":" + username + ":" + (isAdmin ? "ADMIN" : "USER");
-                Cookie sessionCookie = new Cookie("SESSION_ID", cookieValue);
+                Cookie sessionCookie = new Cookie("MY_SESSION_ID", cookieValue);
 
-                sessionCookie.setMaxAge(300); // 5 minutes
+                sessionCookie.setMaxAge(SESSION_DURATION_SECONDS);
                 sessionCookie.setHttpOnly(true);
                 sessionCookie.setPath("/");
 
-                System.out.println("Setting cookie: " + sessionCookie.getName() + "=" + sessionCookie.getValue());
-                System.out.println("Cookie value: " + sessionId);
-                System.out.println("Cookie session: " + sessionCookie);
+                log.info("Setting cookie: {}={}", sessionCookie.getName(), sessionCookie.getValue());
+                log.info("Cookie session: {}", sessionCookie);
+
                 response.addCookie(sessionCookie);
 
                 return ResponseEntity.ok("{\"message\":\"Login successful\"}");

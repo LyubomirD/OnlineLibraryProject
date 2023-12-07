@@ -4,6 +4,8 @@ import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LoginService {
 
+    private static final Logger log = LoggerFactory.getLogger(LoginService.class);
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -22,10 +25,20 @@ public class LoginService {
         if (userOptional.isPresent()) {
             AppUser appUser = userOptional.get();
 
-            return passwordEncoder.matches(password, appUser.getPassword());
+            if (passwordEncoder.matches(password, appUser.getPassword())) {
+                return true; // Authentication successful
+            } else {
+                // Incorrect password
+                // Log this event for auditing or debugging purposes
+                log.warn("Authentication failure for user '{}': Incorrect password", username);
+            }
+        } else {
+            // User not found
+            // Log this event for auditing or debugging purposes
+            log.warn("Authentication failure: User '{}' not found", username);
         }
 
-        return false;
+        return false; // Authentication failed
     }
 
     public boolean isUserAdmin(String username) {

@@ -14,8 +14,8 @@ public class LibraryAdminController {
     private final LibraryAdminService libraryAdminService;
 
     @GetMapping("get-bookId/{title}/{author}")
-    public Long getBookById(@PathVariable String title, @PathVariable String author) {
-        return libraryAdminService.getBookId(title, author);
+    public Long getBookById(@PathVariable String title, @PathVariable String author, HttpServletRequest httpServletRequest) {
+        return libraryAdminService.getBookId(title, author, httpServletRequest);
     }
 
     @PostMapping("add-book")
@@ -24,14 +24,12 @@ public class LibraryAdminController {
     }
 
     @PutMapping("update-book/{book_id}")
-    public void updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequest request) {
-        libraryAdminService.changeExistingBookInform(book_id, request);
+    public void updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequest request, HttpServletRequest httpServletRequest) {
+        libraryAdminService.changeExistingBookInform(book_id, request, httpServletRequest);
     }
-
 
     @DeleteMapping("delete-book/{book_id}")
-    public void deleteBookFromLibrary(@PathVariable Long book_id) {
-        libraryAdminService.deleteBookFromLibrary(book_id);
+    public void deleteBookFromLibrary(@PathVariable Long book_id, HttpServletRequest httpServletRequest) {
+        libraryAdminService.deleteBookFromLibrary(book_id, httpServletRequest);
     }
-
 }
