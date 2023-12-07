@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.UUID;
 
 @RestController
@@ -23,10 +24,10 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final LoginService loginService;
-    private static final int SESSION_DURATION_SECONDS = 300; // 5 minutes
+    private static final int SESSION_DURATION_SECONDS = 24 * 60 * 60; // 24 hours / 300 = 5 min
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestHeader("Authorization") String authHeader,
+    public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader,
                                    HttpServletResponse response) {
         String[] credentials = getCredentials(authHeader);
 
@@ -44,13 +45,15 @@ public class LoginController {
                 sessionCookie.setMaxAge(SESSION_DURATION_SECONDS);
                 sessionCookie.setHttpOnly(true);
                 sessionCookie.setPath("/");
+                sessionCookie.setDomain("localhost");
 
                 log.info("Setting cookie: {}={}", sessionCookie.getName(), sessionCookie.getValue());
                 log.info("Cookie session: {}", sessionCookie);
 
                 response.addCookie(sessionCookie);
 
-                return ResponseEntity.ok("{\"message\":\"Login successful\"}");
+
+                return ResponseEntity.ok(Collections.singletonMap("sessionId", sessionId));
             }
         }
 
