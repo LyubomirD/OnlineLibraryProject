@@ -49,11 +49,10 @@ public class LoginController {
 
                 log.info("Setting cookie: {}={}", sessionCookie.getName(), sessionCookie.getValue());
                 log.info("Cookie session: {}", sessionCookie);
-
                 response.addCookie(sessionCookie);
 
 
-                return ResponseEntity.ok(Collections.singletonMap("sessionId", sessionId));
+                return ResponseEntity.ok(Collections.singletonMap("MY_SESSION_ID", sessionCookie.getValue()));
             }
         }
 

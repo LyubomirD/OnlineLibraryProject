@@ -20,7 +20,7 @@ public class ConfigCORS {
                 "Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
                 "Access-Control-Request-Method", "Access-Control-Request-Headers",
-                "Set-Cookie"
+                "Set-Cookie","MY_SESSION_ID", "Your-Custom-Cookie-Header"
         ));
         corsConfiguration.setExposedHeaders(Arrays.asList(
                 "Origin", "Content-Type", "Accept", "Authorization",

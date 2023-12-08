@@ -7,7 +7,6 @@ import com.example.online_library.models.book.BookAdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -17,36 +16,31 @@ public class LibraryAdminService {
 
     private final BookAdminService bookAdminService;
 
-    private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        String role = null;
+    private void checkUserOrThrowException(String customCookieHeader) {
+        if (customCookieHeader != null) {
+            String[] cookieParts = customCookieHeader.split(":");
+            String role = (cookieParts.length > 2) ? cookieParts[2] : null;
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("MY_SESSION_ID".equals(cookie.getName())) {
-                    String[] cookieParts = cookie.getValue().split(":");
-                    if (cookieParts.length > 2) {
-                        role = cookieParts[2];
-                        break;
-                    }
-                }
+            if (!"ADMIN".equals(role)) {
+                throw new AdminAccessDeniedException("Access denied, user not administrator");
             }
-        }
-
-        if (!"ADMIN".equals(role)) {
+        } else {
             throw new AdminAccessDeniedException("Access denied, user not administrator");
         }
     }
 
 
+
     public Long getBookId(String title, String author, HttpServletRequest httpServletRequest) {
-        checkUserOrThrowException(httpServletRequest);
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+        checkUserOrThrowException(customCookieHeader);
 
         return bookAdminService.findBookId(title, author);
     }
 
     public void includeNewBookToLibrary(LibraryRequest request, HttpServletRequest httpServletRequest) {
-        checkUserOrThrowException(httpServletRequest);
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+        checkUserOrThrowException(customCookieHeader);
 
         bookAdminService.addNewBook(
                 new Book(
@@ -59,7 +53,8 @@ public class LibraryAdminService {
     }
 
     public void changeExistingBookInform(Long book_id, LibraryRequest request, HttpServletRequest httpServletRequest) {
-        checkUserOrThrowException(httpServletRequest);
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+        checkUserOrThrowException(customCookieHeader);
 
         bookAdminService.updateExistingBook(
                 book_id,
@@ -73,7 +68,8 @@ public class LibraryAdminService {
     }
 
     public void deleteBookFromLibrary(Long book_id, HttpServletRequest httpServletRequest) {
-        checkUserOrThrowException(httpServletRequest);
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+        checkUserOrThrowException(customCookieHeader);
 
         bookAdminService.deleteBook(book_id);
     }
