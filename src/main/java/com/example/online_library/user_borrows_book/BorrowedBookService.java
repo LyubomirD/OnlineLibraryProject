@@ -8,8 +8,8 @@ import com.example.online_library.models.book.BookAdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,23 +21,21 @@ public class BorrowedBookService {
     private final UserService userService;
 
     private String getEmailFromCookie(HttpServletRequest httpServletRequest) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        String email = null;
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+        System.out.println("Custom header: " + customCookieHeader);
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("MY_SESSION_ID".equals(cookie.getName())) {
-                    String[] cookieParts = cookie.getValue().split(":");
-                    if (cookieParts.length > 1) {
-                        email = cookieParts[1];
-                        break;
-                    }
-                }
-            }
+        if (customCookieHeader == null || customCookieHeader.isEmpty()) {
+            return null;
         }
+
+        String[] cookieParts = customCookieHeader.split(":");
+        String email = (cookieParts.length > 1) ? cookieParts[1] : null;
+        System.out.println("Cookie parts: " + Arrays.toString(cookieParts));
+        System.out.println("Email: " + email);
 
         return email;
     }
+
 
     public Set<Book> viewAllUsersBook(HttpServletRequest httpServletRequest) {
         String email = getEmailFromCookie(httpServletRequest);
@@ -53,6 +51,8 @@ public class BorrowedBookService {
 
     private Optional<AppUser> modifyBookAction(BorrowedBookRequest request, boolean addBook, HttpServletRequest httpServletRequest) {
         String email = getEmailFromCookie(httpServletRequest);
+        System.out.println("USER EMAIL: " + email);
+
 
         if (email != null) {
             Optional<AppUser> userOptional = userService.findUserByEmail(email);

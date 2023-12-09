@@ -16,7 +16,9 @@ public class LibraryAdminService {
 
     private final BookAdminService bookAdminService;
 
-    private void checkUserOrThrowException(String customCookieHeader) {
+    private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
+        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
+
         if (customCookieHeader != null) {
             String[] cookieParts = customCookieHeader.split(":");
             String role = (cookieParts.length > 2) ? cookieParts[2] : null;
@@ -32,15 +34,13 @@ public class LibraryAdminService {
 
 
     public Long getBookId(String title, String author, HttpServletRequest httpServletRequest) {
-        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
-        checkUserOrThrowException(customCookieHeader);
+        checkUserOrThrowException(httpServletRequest);
 
         return bookAdminService.findBookId(title, author);
     }
 
     public void includeNewBookToLibrary(LibraryRequest request, HttpServletRequest httpServletRequest) {
-        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
-        checkUserOrThrowException(customCookieHeader);
+        checkUserOrThrowException(httpServletRequest);
 
         bookAdminService.addNewBook(
                 new Book(
@@ -53,8 +53,7 @@ public class LibraryAdminService {
     }
 
     public void changeExistingBookInform(Long book_id, LibraryRequest request, HttpServletRequest httpServletRequest) {
-        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
-        checkUserOrThrowException(customCookieHeader);
+        checkUserOrThrowException(httpServletRequest);
 
         bookAdminService.updateExistingBook(
                 book_id,
@@ -68,8 +67,7 @@ public class LibraryAdminService {
     }
 
     public void deleteBookFromLibrary(Long book_id, HttpServletRequest httpServletRequest) {
-        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
-        checkUserOrThrowException(customCookieHeader);
+        checkUserOrThrowException(httpServletRequest);
 
         bookAdminService.deleteBook(book_id);
     }
