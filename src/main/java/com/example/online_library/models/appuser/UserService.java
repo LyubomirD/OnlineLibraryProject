@@ -1,8 +1,8 @@
 package com.example.online_library.models.appuser;
 
+import com.example.online_library.exceptions.EmailTakenException;
 import com.example.online_library.models.token.ConfirmationToken;
 import com.example.online_library.models.token.ConfirmationTokenService;
-import com.example.online_library.exceptions.EmailTakenException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,14 +30,16 @@ public class UserService implements UserDetailsService {
     }
 
     public String signUpUser(AppUser appUser) {
-        deleteAppUserIfConfirmationTokenNotConfirmed(appUser);
+        Optional<AppUser> existingUser = userRepository.findByEmail(appUser.getEmail());
 
-        boolean userExists = userRepository
-                .findByEmail(appUser.getEmail())
-                .isPresent();
-
-        if (userExists) {
-            throw new EmailTakenException("email already taken");
+        if (existingUser.isPresent()) {
+            if (existingUser.get().isEnabled()) {
+                throw new EmailTakenException("email already taken");
+            } else {
+                Long userId = existingUser.get().getId();
+                confirmationTokenService.deleteUnConfirmedToken(userId);
+                userRepository.deleteById(userId);
+            }
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
@@ -76,13 +78,4 @@ public class UserService implements UserDetailsService {
     public Boolean findUserByEmailAndRoleAdmin(String email, UserRole role) {
         return userRepository.existsByEmailAndUserRole(email, role);
     }
-
-    private void deleteAppUserIfConfirmationTokenNotConfirmed(AppUser appUser) {
-        if (!appUser.isEnabled()) {
-            userRepository.delete(appUser);
-            userRepository.flush();
-        }
-    }
-
-
 }
