@@ -97,5 +97,5 @@ public class AppUser implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<Book> books = new HashSet<>();
+    private List<Book> books = new ArrayList<>();
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,7 +38,7 @@ public class BorrowedBookService {
     }
 
 
-    public Set<Book> viewAllUsersBook(HttpServletRequest httpServletRequest) {
+    public List<BorrowedBookRequest> viewAllUsersBook(HttpServletRequest httpServletRequest) {
         String email = getEmailFromCookie(httpServletRequest);
 
         if (email == null) {
@@ -47,7 +47,19 @@ public class BorrowedBookService {
 
         Optional<AppUser> user = userService.findUserByEmail(email);
 
-        return user.get().getBooks();
+        List<Book> userBooks = user.get().getBooks();
+        return convertToBorrowedBookResponse(userBooks);
+    }
+
+    private List<BorrowedBookRequest> convertToBorrowedBookResponse(List<Book> books) {
+        return books.stream()
+                .map(book -> new BorrowedBookRequest(
+                        book.getTitle(),
+                        book.getAuthor(),
+                        book.getCoAuthor(),
+                        book.getCategories()
+                ))
+                .collect(Collectors.toList());
     }
 
     private Optional<AppUser> modifyBookAction(BorrowedBookRequest request, boolean addBook, HttpServletRequest httpServletRequest) {
