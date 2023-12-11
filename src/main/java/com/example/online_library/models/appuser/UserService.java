@@ -30,6 +30,8 @@ public class UserService implements UserDetailsService {
     }
 
     public String signUpUser(AppUser appUser) {
+        deleteAppUserIfConfirmationTokenNotConfirmed(appUser);
+
         boolean userExists = userRepository
                 .findByEmail(appUser.getEmail())
                 .isPresent();
@@ -74,5 +76,13 @@ public class UserService implements UserDetailsService {
     public Boolean findUserByEmailAndRoleAdmin(String email, UserRole role) {
         return userRepository.existsByEmailAndUserRole(email, role);
     }
+
+    private void deleteAppUserIfConfirmationTokenNotConfirmed(AppUser appUser) {
+        if (!appUser.isEnabled()) {
+            userRepository.delete(appUser);
+            userRepository.flush();
+        }
+    }
+
 
 }
