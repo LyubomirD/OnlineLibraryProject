@@ -2,6 +2,8 @@ package com.example.online_library.library.admin;
 
 import com.example.online_library.exceptions.AdminAccessDeniedException;
 import com.example.online_library.library.LibraryRequest;
+import com.example.online_library.models.appuser.UserRole;
+import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
 import com.example.online_library.models.book.BookAdminService;
 import lombok.AllArgsConstructor;
@@ -16,15 +18,18 @@ public class LibraryAdminService {
 
     private final BookAdminService bookAdminService;
 
+    private final UserService userService;
+
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
         String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
 
         if (customCookieHeader != null) {
             String[] cookieParts = customCookieHeader.split(":");
+            String email = (cookieParts.length > 1) ? cookieParts[1] : null;
             String role = (cookieParts.length > 2) ? cookieParts[2] : null;
 
-            if (!"ADMIN".equals(role)) {
-                throw new AdminAccessDeniedException("Access denied, user not administrator");
+            if (!userService.findUserByEmailAndRoleAdmin(email, UserRole.valueOf(role))) {
+                throw new AdminAccessDeniedException("User not found, or user is not administrator");
             }
         } else {
             throw new AdminAccessDeniedException("Access denied, user not administrator");
