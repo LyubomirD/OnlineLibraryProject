@@ -1,23 +1,27 @@
 package com.example.online_library.models.appuser;
 
 import com.example.online_library.models.book.Book;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails, Serializable {
+public class AppUser implements UserDetails {
 
-    //TODO I havent added before Serializable if there is an error is from it
     @SequenceGenerator(
             name = "app_user_sequence",
             sequenceName = "user_sequence",

@@ -24,7 +24,7 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final LoginService loginService;
-    private static final int SESSION_DURATION_SECONDS = 24 * 60 * 60; // 24 hours / 300 = 5 min
+    private static final int SESSION_DURATION_SECONDS = 300; // 5 min
 
     @PostMapping
     public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader,

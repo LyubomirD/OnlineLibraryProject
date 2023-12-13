@@ -76,9 +76,13 @@ public class BookAdminService {
 
 
     public void deleteBook(Long bookId) {
-        if (bookRepository.findById(bookId).isEmpty()) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isEmpty()) {
             throw new RuntimeException("Book does NOT exists");
         }
+
+        optionalBook.get().getCategories().clear();
 
         bookRepository.deleteById(bookId);
     }
