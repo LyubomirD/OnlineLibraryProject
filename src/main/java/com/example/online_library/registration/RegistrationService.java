@@ -38,8 +38,7 @@ public class RegistrationService {
     public String registerClient(AppUserDto request) {
         validateEmailAndPassword(request);
 
-        AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
-        appUser.setUserRole(UserRole.USER);
+        AppUser appUser = appUserMapper.appUserDtoToAppUser(request, UserRole.USER);
         String token = userService.signUpUser(appUser);
 
         return token;
@@ -49,8 +48,7 @@ public class RegistrationService {
     public String registerAdministrator(AppUserDto request) {
         validateEmailAndPassword(request);
 
-        AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
-        appUser.setUserRole(UserRole.ADMIN);
+        AppUser appUser = appUserMapper.appUserDtoToAppUser(request, UserRole.ADMIN);
         String token = userService.signUpUser(appUser);
 
         return token;
