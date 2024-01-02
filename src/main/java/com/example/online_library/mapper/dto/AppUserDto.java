@@ -1,4 +1,4 @@
-package com.example.online_library.registration;
+package com.example.online_library.mapper.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RegistrationRequest {
+public class AppUserDto {
     private final String firstName;
     private final String lastName;
     private final String email;
