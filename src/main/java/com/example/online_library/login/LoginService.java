@@ -1,5 +1,6 @@
 package com.example.online_library.login;
 
+import com.example.online_library.login.encryptUserSession.EncryptionUtils;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
@@ -72,13 +74,25 @@ public class LoginService {
     private Cookie createSessionCookie(String sessionId, String username, boolean isAdmin) {
         UserRole userRole = isAdmin ? ADMIN : CLIENT;
 
-        Cookie userSession = new Cookie(SESSION_NAME, sessionId + ":" + username + ":" + userRole);
-        userSession.setMaxAge(SESSION_DURATION_SECONDS);
-        userSession.setHttpOnly(true);
-        userSession.setPath("/");
-        userSession.setDomain("localhost");
+        String sessionData = sessionId + ":" + username + ":" + userRole;
 
-        return userSession;
+        try {
+            SecretKey secretKey = EncryptionUtils.generateSecretKey();
+            String encryptedSessionData = EncryptionUtils.encrypt(sessionData, secretKey);
+            System.out.println("Encrypted session: " + encryptedSessionData);
+
+            Cookie userSession = new Cookie(SESSION_NAME, encryptedSessionData);
+            userSession.setMaxAge(SESSION_DURATION_SECONDS);
+            userSession.setHttpOnly(true);
+            userSession.setPath("/");
+            userSession.setDomain("localhost");
+
+            return userSession;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public ResponseEntity<?> getUserThatLogsCredentials(String authHeader, HttpServletResponse response) {

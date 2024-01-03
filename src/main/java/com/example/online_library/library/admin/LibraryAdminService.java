@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 public class LibraryAdminService {
 
     private final BookAdminService bookAdminService;
-
     private final UserService userService;
 
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
