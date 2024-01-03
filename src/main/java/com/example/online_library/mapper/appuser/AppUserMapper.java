@@ -9,13 +9,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AppUserMapper {
     AppUserDto appUserToAppUserDto(AppUser appUser);
-//
-//    @Mapping(target = "firstName", source = "appUserDto.firstName")
-//    @Mapping(target = "lastName", source = "appUserDto.lastName")
-//    @Mapping(target = "email", source = "appUserDto.email")
-//    @Mapping(target = "password", source = "appUserDto.password")
-//    AppUser appUserDtoToAppUser(AppUserDto appUserDto);
 
-    AppUser appUserDtoToAppUser(AppUserDto appUserDto, @Context UserRole userRole);
-
+    AppUser appUserDtoToAppUser(AppUserDto appUserDto);
 }

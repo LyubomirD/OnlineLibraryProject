@@ -64,7 +64,7 @@ public class BorrowedBookService {
 
     private Optional<AppUser> modifyBookAction(BorrowedBookRequest request, boolean addBook, HttpServletRequest httpServletRequest) {
         String email = getEmailFromCookie(httpServletRequest);
-        System.out.println("USER EMAIL: " + email);
+        System.out.println("CLIENT EMAIL: " + email);
 
 
         if (email != null) {
