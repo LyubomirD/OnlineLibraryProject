@@ -28,23 +28,6 @@ public class BorrowedBookService {
     private final BorrowBookRequestMapper borrowBookRequestMapper;
     private static final String SESSION_NAME = "MY_SESSION_ID";
 
-
-//    private String getEmailFromCookie(HttpServletRequest httpServletRequest) {
-//        String customCookieHeader = httpServletRequest.getHeader("Your-Custom-Cookie-Header");
-//        System.out.println("Custom header: " + customCookieHeader);
-//
-//        if (customCookieHeader == null || customCookieHeader.isEmpty()) {
-//            return null;
-//        }
-//
-//        String[] cookieParts = customCookieHeader.split(":");
-//        String email = (cookieParts.length > 1) ? cookieParts[1] : null;
-//        System.out.println("Cookie parts: " + Arrays.toString(cookieParts));
-//        System.out.println("Email: " + email);
-//
-//        return email;
-//    }
-
     private String getEmailFromUserSession(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
 

@@ -16,8 +16,8 @@ public class RegistrationController {
         return registrationService.registerClient(request);
     }
     @PostMapping("/administrator")
-    public String registerAdministrator(@RequestBody AppUserDto request) {
-        return registrationService.registerAdministrator(request);
+    public void registerAdministrator(@RequestBody AppUserDto request) {
+         registrationService.registerAdministrator(request);
     }
 
     @GetMapping(path = "/confirm")

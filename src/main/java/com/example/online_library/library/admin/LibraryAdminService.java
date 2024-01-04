@@ -27,7 +27,13 @@ public class LibraryAdminService {
     private static final String SESSION_NAME = "MY_SESSION_ID";
 
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
+        System.out.println("HttpServletRequest: " + httpServletRequest.getSession());
+
+        String header = httpServletRequest.getHeader("Cookie");
+        System.out.println("Header 1: " + header);
+
         Cookie[] cookies = httpServletRequest.getCookies();
+        System.out.println("Cookies[] 2: " + cookies);
 
         if (cookies == null) {
             throw new SessionException("Session cookie not found");
