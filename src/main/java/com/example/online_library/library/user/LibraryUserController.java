@@ -1,6 +1,6 @@
 package com.example.online_library.library.user;
 
-import com.example.online_library.library.LibraryRequest;
+import com.example.online_library.mapper.dto.LibraryRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ public class LibraryUserController {
     private final LibraryUserService libraryUserService;
 
     @GetMapping
-    public List<LibraryRequest> viewAllBooks() {
+    public List<LibraryRequestDto> viewAllBooks() {
         return libraryUserService.viewAllBooks();
     }
 }

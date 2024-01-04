@@ -79,7 +79,6 @@ public class LoginService {
         try {
             SecretKey secretKey = EncryptionUtils.generateSecretKey();
             String encryptedSessionData = EncryptionUtils.encrypt(sessionData, secretKey);
-            System.out.println("Encrypted session: " + encryptedSessionData);
 
             Cookie userSession = new Cookie(SESSION_NAME, encryptedSessionData);
             userSession.setMaxAge(SESSION_DURATION_SECONDS);

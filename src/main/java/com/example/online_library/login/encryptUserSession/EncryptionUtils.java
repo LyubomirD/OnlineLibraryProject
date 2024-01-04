@@ -8,10 +8,23 @@ import java.util.Base64;
 
 public class EncryptionUtils {
 
+    private static SecretKey secretKey;
+
+    private EncryptionUtils() {
+    }
+
     public static SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(128); // key sizes (128, 192, or 256 bits)
-        return keyGenerator.generateKey();
+        if (secretKey == null) {
+            synchronized (EncryptionUtils.class) {
+                // Double-check to ensure another thread hasn't created the key in the meantime
+                if (secretKey == null) {
+                    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+                    keyGenerator.init(128);
+                    secretKey = keyGenerator.generateKey();
+                }
+            }
+        }
+        return secretKey;
     }
 
     public static String encrypt(String data, SecretKey secretKey) throws Exception {
