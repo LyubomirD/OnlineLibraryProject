@@ -1,9 +1,7 @@
-package com.example.online_library.mapper.appuser;
+package com.example.online_library.mapper.mappers;
 
 import com.example.online_library.mapper.dto.AppUserDto;
 import com.example.online_library.models.appuser.AppUser;
-import com.example.online_library.models.appuser.UserRole;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -12,3 +10,4 @@ public interface AppUserMapper {
 
     AppUser appUserDtoToAppUser(AppUserDto appUserDto);
 }
+

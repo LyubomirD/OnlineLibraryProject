@@ -1,6 +1,6 @@
 package com.example.online_library.registration;
 
-import com.example.online_library.mapper.appuser.AppUserMapper;
+import com.example.online_library.mapper.mappers.AppUserMapper;
 import com.example.online_library.mapper.dto.AppUserDto;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserRole;

@@ -1,4 +1,4 @@
-package com.example.online_library.library.user;
+package com.example.online_library.library.client;
 
 import com.example.online_library.mapper.dto.LibraryRequestDto;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/library-user")
 @AllArgsConstructor
-public class LibraryUserController {
+public class LibraryClientController {
 
-    private final LibraryUserService libraryUserService;
+    private final LibraryClientService libraryClientService;
 
     @GetMapping
     public List<LibraryRequestDto> viewAllBooks() {
-        return libraryUserService.viewAllBooks();
+        return libraryClientService.viewAllBooks();
     }
 }

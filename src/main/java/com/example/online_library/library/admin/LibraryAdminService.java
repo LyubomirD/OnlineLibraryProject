@@ -2,13 +2,14 @@ package com.example.online_library.library.admin;
 
 import com.example.online_library.exceptions.AdminAccessDeniedException;
 import com.example.online_library.login.encryptUserSession.EncryptionUtils;
-import com.example.online_library.mapper.appuser.LibraryRequestMapper;
+import com.example.online_library.mapper.mappers.LibraryRequestMapper;
 import com.example.online_library.mapper.dto.LibraryRequestDto;
 import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
 import com.example.online_library.models.book.BookAdminService;
 import lombok.AllArgsConstructor;
+import org.hibernate.SessionException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -28,35 +29,47 @@ public class LibraryAdminService {
     private void checkUserOrThrowException(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (SESSION_NAME.equals(cookie.getName())) {
-                    try {
-                        SecretKey secretKey = EncryptionUtils.generateSecretKey();
-                        String encryptedSessionData = cookie.getValue();
-                        String decryptedSessionData = EncryptionUtils.decrypt(encryptedSessionData, secretKey);
-
-                        if (decryptedSessionData != null) {
-                            String[] sessionParts = decryptedSessionData.split(":");
-                            String email = (sessionParts.length > 1) ? sessionParts[1] : null;
-                            String role = (sessionParts.length > 2) ? sessionParts[2] : null;
-
-                            if (!userService.findUserByEmailAndRoleAdmin(email, UserRole.valueOf(role))) {
-                                throw new AdminAccessDeniedException("User not found, or user is not an administrator");
-                            }
-                        } else {
-                            throw new AdminAccessDeniedException("Access denied, user not administrator");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                }
-            }
+        if (cookies == null) {
+            throw new SessionException("Session cookie not found");
         }
 
-        throw new AdminAccessDeniedException("Access denied, session cookie not found");
+        for (Cookie cookie : cookies) {
+            if (isSessionCookie(cookie)) {
+                handleSessionCookie(cookie);
+            }
+        }
     }
+
+    private boolean isSessionCookie(Cookie cookie) {
+        return SESSION_NAME.equals(cookie.getName());
+    }
+
+    private void handleSessionCookie(Cookie cookie) {
+        try {
+            SecretKey secretKey = EncryptionUtils.generateSecretKey();
+            String decryptedSessionData = decryptSessionCookie(cookie, secretKey);
+
+            if (decryptedSessionData.isBlank()) {
+                throw new SessionException("Session cookie not found");
+            }
+
+            String[] sessionParts = decryptedSessionData.split(":");
+            String email = (sessionParts.length > 1) ? sessionParts[1] : null;
+            String role = (sessionParts.length > 2) ? sessionParts[2] : null;
+
+            if (!userService.findUserByEmailAndRoleAdmin(email, UserRole.valueOf(role))) {
+                throw new AdminAccessDeniedException("User not found, or user is not an administrator");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String decryptSessionCookie(Cookie cookie, SecretKey secretKey) throws Exception {
+        String encryptedSessionData = cookie.getValue();
+        return EncryptionUtils.decrypt(encryptedSessionData, secretKey);
+    }
+
 
     public Long getBookId(String title, String author, HttpServletRequest httpServletRequest) {
         checkUserOrThrowException(httpServletRequest);
