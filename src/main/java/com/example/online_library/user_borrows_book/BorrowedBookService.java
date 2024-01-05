@@ -54,10 +54,6 @@ public class BorrowedBookService {
             SecretKey secretKey = EncryptionUtils.generateSecretKey();
             String decryptedSessionData = decryptSessionCookie(cookie, secretKey);
 
-            if (decryptedSessionData.isBlank()) {
-                throw new SessionException("Session cookie not found");
-            }
-
             String[] sessionParts = decryptedSessionData.split(":");
 
             return (sessionParts.length > 1) ? sessionParts[1] : null;
