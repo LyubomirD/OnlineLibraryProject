@@ -54,7 +54,7 @@ public class LoginService {
     }
 
     private boolean isUserAdmin(String username) {
-        return userService.findUserByEmailAndRoleAdmin(username, ADMIN);
+        return userService.findUserByEmailAndRole(username, ADMIN);
     }
 
     private String generateRandomSessionId() {
