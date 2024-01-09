@@ -1,6 +1,6 @@
 package com.example.online_library.library.admin;
 
-import com.example.online_library.library.LibraryRequest;
+import com.example.online_library.mapper.dto.LibraryRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +19,12 @@ public class LibraryAdminController {
     }
 
     @PostMapping("add-book")
-    public void includeNewBookToLibrary(@RequestBody LibraryRequest request, HttpServletRequest httpServletRequest) {
+    public void includeNewBookToLibrary(@RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
         libraryAdminService.includeNewBookToLibrary(request, httpServletRequest);
     }
 
     @PutMapping("update-book/{book_id}")
-    public void updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequest request, HttpServletRequest httpServletRequest) {
+    public void updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
         libraryAdminService.changeExistingBookInform(book_id, request, httpServletRequest);
     }
 

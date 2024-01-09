@@ -1,6 +1,6 @@
-package com.example.online_library.library.user;
+package com.example.online_library.library.client;
 
-import com.example.online_library.library.LibraryRequest;
+import com.example.online_library.mapper.dto.LibraryRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/library-user")
 @AllArgsConstructor
-public class LibraryUserController {
+public class LibraryClientController {
 
-    private final LibraryUserService libraryUserService;
+    private final LibraryClientService libraryClientService;
 
     @GetMapping
-    public List<LibraryRequest> viewAllBooks() {
-        return libraryUserService.viewAllBooks();
+    public List<LibraryRequestDto> viewAllBooks() {
+        return libraryClientService.viewAllBooks();
     }
 }
