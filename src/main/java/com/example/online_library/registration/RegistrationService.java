@@ -37,25 +37,21 @@ public class RegistrationService {
         }
     }
 
-    public String registerClient(AppUserDto request) {
+    public void registerClient(AppUserDto request) {
         validateEmailAndPassword(request);
 
         AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
         appUser.setUserRole(CLIENT);
         String token = userService.signUpUser(appUser);
-
-        return token;
     }
 
 
-    public String registerAdministrator(AppUserDto request) {
+    public void registerAdministrator(AppUserDto request) {
         validateEmailAndPassword(request);
 
         AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
         appUser.setUserRole(ADMIN);
         String token = userService.signUpUser(appUser);
-
-        return token;
     }
 
     @Transactional

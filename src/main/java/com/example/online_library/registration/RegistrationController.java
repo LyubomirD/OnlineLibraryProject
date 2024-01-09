@@ -12,8 +12,8 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/client")
-    public String registerClient(@RequestBody AppUserDto request) {
-        return registrationService.registerClient(request);
+    public void registerClient(@RequestBody AppUserDto request) {
+         registrationService.registerClient(request);
     }
     @PostMapping("/administrator")
     public void registerAdministrator(@RequestBody AppUserDto request) {
