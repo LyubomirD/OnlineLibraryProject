@@ -16,13 +16,9 @@ public class BorrowedBookController {
 
     private final BorrowedBookService borrowedBookService;
 
-    //TODO Change the optionals to DTOs
-
     @GetMapping("/view")
     public List<BorrowBookRequestDto> viewUserBook(HttpServletRequest httpServletRequest) {
-        List<BorrowBookRequestDto> dto = borrowedBookService.viewAllUsersBook(httpServletRequest);
-        System.out.println("Books list: " + dto);
-        return dto;
+        return borrowedBookService.viewAllUsersBook(httpServletRequest);
     }
 
     @PostMapping("/borrow")

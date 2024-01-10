@@ -29,7 +29,6 @@ public class LoginService {
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
     private static final Logger log = LoggerFactory.getLogger(LoginService.class);
-    private static final int SESSION_DURATION_SECONDS = 300; // 5 min
     private static final String SESSION_NAME = "MY_SESSION_ID";
     private static final UserRole ADMIN = UserRole.ADMIN;
     private static final UserRole CLIENT = UserRole.CLIENT;
@@ -81,7 +80,6 @@ public class LoginService {
             String encryptedSessionData = EncryptionUtils.encrypt(sessionData, secretKey);
 
             Cookie userSession = new Cookie(SESSION_NAME, encryptedSessionData);
-            userSession.setMaxAge(SESSION_DURATION_SECONDS);
             userSession.setHttpOnly(true);
             userSession.setPath("/");
             userSession.setDomain("localhost");

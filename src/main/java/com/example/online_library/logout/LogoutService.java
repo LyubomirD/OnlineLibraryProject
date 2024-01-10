@@ -6,26 +6,33 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 @AllArgsConstructor
 public class LogoutService {
 
-    public boolean logoutUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    private static final String SESSION_NAME = "MY_SESSION_ID";
+
+    public void logoutUser(HttpServletRequest httpServletRequest) {
         try {
             SecurityContextHolder.clearContext();
 
-            Cookie sessionCookie = new Cookie("MY_SESSION_ID", null);
-            sessionCookie.setMaxAge(0);
-            sessionCookie.setHttpOnly(true);
-            sessionCookie.setPath("/");
+            Cookie[] cookies = httpServletRequest.getCookies();
 
-            httpServletResponse.addCookie(sessionCookie);
-
-            return true;
+            for (Cookie cookie: cookies) {
+                if (isSessionCookie(cookie)) {
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                }
+            }
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
     }
+
+    private boolean isSessionCookie(Cookie cookie) {
+        return SESSION_NAME.equals(cookie.getName());
+    }
+
 }
