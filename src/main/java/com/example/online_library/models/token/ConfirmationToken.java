@@ -26,7 +26,7 @@ public class ConfirmationToken {
     )
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String token;
 
     @Column(nullable = false)

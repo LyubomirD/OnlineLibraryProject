@@ -1,4 +1,4 @@
-package com.example.online_library.web_security.config;
+package com.example.online_library.web_security;
 
 import com.example.online_library.models.appuser.UserService;
 import lombok.AllArgsConstructor;
