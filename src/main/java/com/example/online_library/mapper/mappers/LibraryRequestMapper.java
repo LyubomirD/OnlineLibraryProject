@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LibraryRequestMapper {
+
     @Mapping(target = "category", source = "book.categories")
     LibraryRequestDto bookToLibraryRequestDto(Book book);
 
@@ -17,6 +18,4 @@ public interface LibraryRequestMapper {
 
     @Mapping(target = "categories", source = "libraryRequestDto.category")
     Book libraryRequestDtoToBook(LibraryRequestDto libraryRequestDto);
-
-
 }

@@ -1,6 +1,6 @@
 package com.example.online_library.mapper.dto;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class AppUserDto {

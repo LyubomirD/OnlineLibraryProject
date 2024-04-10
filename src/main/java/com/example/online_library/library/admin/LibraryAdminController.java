@@ -4,8 +4,7 @@ import com.example.online_library.mapper.dto.LibraryRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "api/v1/library-admin")
 @AllArgsConstructor

@@ -2,10 +2,10 @@ package com.example.online_library.user_borrows_book;
 
 import com.example.online_library.mapper.dto.BorrowBookRequestDto;
 import com.example.online_library.models.appuser.AppUser;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 

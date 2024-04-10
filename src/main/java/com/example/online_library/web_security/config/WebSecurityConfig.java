@@ -5,41 +5,43 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                .and()
-                .csrf().disable()
-                .cors()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/v*/library-admin/**").permitAll()
-                .antMatchers("/api/v*/library-user/**").permitAll()
-                .antMatchers("/api/v*/registration/**").permitAll()
-                .antMatchers("/api/v*/book-borrow/**").permitAll()
-                .antMatchers("/api/v*/login/**").permitAll()
-                .antMatchers("/api/v*/logout/**").permitAll()
-                .anyRequest().authenticated();
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.httpBasic(withDefaults());
+
+        http.csrf(AbstractHttpConfigurer::disable);
+
+        http.authorizeHttpRequests(auth -> {
+            auth
+                    .requestMatchers("/api/v*/library-admin/**").permitAll()
+                    .requestMatchers("/api/v*/library-user/**").permitAll()
+                    .requestMatchers("/api/v*/registration/**").permitAll()
+                    .requestMatchers("/api/v*/book-borrow/**").permitAll()
+                    .requestMatchers("/api/v*/login/**").permitAll()
+                    .requestMatchers("/api/v*/logout/**").permitAll();
+                }
+        );
+
+        return http.build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
-    }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {

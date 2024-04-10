@@ -3,10 +3,10 @@ package com.example.online_library.models.book;
 import com.example.online_library.exceptions.BookNotFoundException;
 import com.example.online_library.models.categories.Category;
 import com.example.online_library.models.categories.CategoryService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;

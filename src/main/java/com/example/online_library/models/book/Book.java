@@ -1,13 +1,12 @@
 package com.example.online_library.models.book;
 
 import com.example.online_library.models.categories.Category;
-import com.sun.istack.NotNull;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Set;
 
 @Getter
@@ -29,13 +28,12 @@ public class Book {
     )
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private String title;
 
-    @NotNull
+    @Column(nullable = false)
     private String author;
     private String coAuthor;
-
     public Book(String title, String author, String coAuthor, Set<Category> categories) {
         this.title = title;
         this.author = author;
