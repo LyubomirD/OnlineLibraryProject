@@ -1,4 +1,4 @@
-package com.example.online_library.models.token;
+package com.example.online_library.models.uuid_token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

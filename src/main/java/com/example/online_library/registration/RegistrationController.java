@@ -1,6 +1,6 @@
 package com.example.online_library.registration;
 
-import com.example.online_library.mapper.dto.AppUserDto;
+import com.example.online_library.mapper.dto.AppUserRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,11 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/client")
-    public void registerClient(@RequestBody AppUserDto request) {
+    public void registerClient(@RequestBody AppUserRequestDto request) {
          registrationService.registerClient(request);
     }
     @PostMapping("/administrator")
-    public void registerAdministrator(@RequestBody AppUserDto request) {
+    public void registerAdministrator(@RequestBody AppUserRequestDto request) {
          registrationService.registerAdministrator(request);
     }
 

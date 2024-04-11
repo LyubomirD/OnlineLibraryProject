@@ -1,4 +1,4 @@
-package com.example.online_library.models.token;
+package com.example.online_library.models.uuid_token;
 
 import com.example.online_library.models.appuser.AppUser;
 import lombok.Getter;

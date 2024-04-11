@@ -1,4 +1,4 @@
-package com.example.online_library.models.token;
+package com.example.online_library.models.uuid_token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

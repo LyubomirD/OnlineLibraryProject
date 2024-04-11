@@ -1,12 +1,12 @@
 package com.example.online_library.registration;
 
+import com.example.online_library.mapper.dto.AppUserRequestDto;
 import com.example.online_library.mapper.mappers.AppUserMapper;
-import com.example.online_library.mapper.dto.AppUserDto;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
-import com.example.online_library.models.token.ConfirmationToken;
-import com.example.online_library.models.token.ConfirmationTokenService;
+import com.example.online_library.models.uuid_token.ConfirmationToken;
+import com.example.online_library.models.uuid_token.ConfirmationTokenService;
 import com.example.online_library.validators.EmailValidator;
 import com.example.online_library.validators.PasswordValidator;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class RegistrationService {
     private static final UserRole CLIENT = UserRole.CLIENT;
 
 
-    private void validateEmailAndPassword(AppUserDto request) {
+    private void validateEmailAndPassword(AppUserRequestDto request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
         boolean isValidPassword = passwordValidator.test(request.getPassword());
 
@@ -37,7 +37,7 @@ public class RegistrationService {
         }
     }
 
-    public void registerClient(AppUserDto request) {
+    public void registerClient(AppUserRequestDto request) {
         validateEmailAndPassword(request);
 
         AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
@@ -46,7 +46,7 @@ public class RegistrationService {
     }
 
 
-    public void registerAdministrator(AppUserDto request) {
+    public void registerAdministrator(AppUserRequestDto request) {
         validateEmailAndPassword(request);
 
         AppUser appUser = appUserMapper.appUserDtoToAppUser(request);
