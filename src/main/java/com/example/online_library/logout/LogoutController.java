@@ -1,6 +1,5 @@
 package com.example.online_library.logout;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,7 @@ public class LogoutController {
     private final LogoutService logoutService;
 
     @PostMapping
-    public void logoutUser(HttpServletRequest httpServletRequest) {
-        logoutService.logoutUser(httpServletRequest);
+    public void logoutUser() {
+        logoutService.logoutUser();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.online_library.filter;
 
 import com.example.online_library.models.appuser.UserService;
-import com.example.online_library.models.jwt_token.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

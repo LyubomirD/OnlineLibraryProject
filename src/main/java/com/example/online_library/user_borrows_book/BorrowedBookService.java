@@ -1,21 +1,20 @@
 package com.example.online_library.user_borrows_book;
 
 import com.example.online_library.exceptions.EmailValidationException;
-import com.example.online_library.login.encryptUserSession.EncryptionUtils;
+import com.example.online_library.filter.JwtService;
+import com.example.online_library.filter.JwtTokenExtractor;
 import com.example.online_library.mapper.dto.BorrowBookRequestDto;
 import com.example.online_library.mapper.mappers.BorrowBookRequestMapper;
 import com.example.online_library.models.appuser.AppUser;
 import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
 import com.example.online_library.models.book.BookAdminService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.hibernate.SessionException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -26,52 +25,16 @@ public class BorrowedBookService {
     private final BookAdminService bookAdminService;
     private final UserService userService;
     private final BorrowBookRequestMapper borrowBookRequestMapper;
-    private static final String SESSION_NAME = "MY_SESSION_ID";
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final JwtService jwtService;
 
-    private String getEmailFromUserSession(HttpServletRequest httpServletRequest) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-
-        if (cookies == null) {
-            throw new SessionException("Session cookie not found");
-        }
-
-        String email = null;
-        for (Cookie cookie : cookies) {
-            if (isSessionCookie(cookie)) {
-                email = handleSessionCookie(cookie);
-            }
-        }
-
-        return email;
+    private String getUserEmailFromToken(HttpServletRequest httpServletRequest) {
+        String token = jwtTokenExtractor.extractTokenFromRequest(httpServletRequest);
+        return jwtService.extractUsername(token);
     }
-
-    private boolean isSessionCookie(Cookie cookie) {
-        return SESSION_NAME.equals(cookie.getName());
-    }
-
-    private String handleSessionCookie(Cookie cookie) {
-        try {
-            SecretKey secretKey = EncryptionUtils.generateSecretKey();
-            String decryptedSessionData = decryptSessionCookie(cookie, secretKey);
-
-            String[] sessionParts = decryptedSessionData.split(":");
-
-            return (sessionParts.length > 1) ? sessionParts[1] : null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        throw new UsernameNotFoundException("User with that email does not exist");
-    }
-
-    private String decryptSessionCookie(Cookie cookie, SecretKey secretKey) throws Exception {
-        String encryptedSessionData = cookie.getValue();
-        return EncryptionUtils.decrypt(encryptedSessionData, secretKey);
-    }
-
 
     public List<BorrowBookRequestDto> viewAllUsersBook(HttpServletRequest httpServletRequest) {
-        String email = getEmailFromUserSession(httpServletRequest);
+        String email = getUserEmailFromToken(httpServletRequest);
 
         if (email == null) {
             throw new EmailValidationException("Email is not validated or not registered");
@@ -84,16 +47,20 @@ public class BorrowedBookService {
         return borrowBookRequestMapper.bookListToBorrowBookRequestDtoList(userBooks);
     }
 
+    @Transactional
     public Optional<AppUser> addBookToUser(BorrowBookRequestDto request, HttpServletRequest httpServletRequest) {
         return modifyBookAction(request, true, httpServletRequest);
     }
 
+    @Transactional
     public Optional<AppUser> removeBookFromUser(BorrowBookRequestDto request, HttpServletRequest httpServletRequest) {
         return modifyBookAction(request, false, httpServletRequest);
     }
 
     private Optional<AppUser> modifyBookAction(BorrowBookRequestDto request, boolean addBook, HttpServletRequest httpServletRequest) {
-        String email = getEmailFromUserSession(httpServletRequest);
+        String email = getUserEmailFromToken(httpServletRequest);
+
+        System.out.println("EMAIL in BORROWING AND REMOVING" + email);
 
         if (email != null) {
             Optional<AppUser> userOptional = userService.findUserByEmail(email);
@@ -119,5 +86,4 @@ public class BorrowedBookService {
 
         return Optional.empty();
     }
-
 }

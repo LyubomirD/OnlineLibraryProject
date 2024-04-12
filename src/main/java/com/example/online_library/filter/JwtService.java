@@ -1,4 +1,4 @@
-package com.example.online_library.models.jwt_token;
+package com.example.online_library.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
