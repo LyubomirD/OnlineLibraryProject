@@ -1,4 +1,4 @@
-package com.example.online_library.filter;
+package com.example.online_library.jwt_token;
 
 import com.example.online_library.models.appuser.UserService;
 import jakarta.servlet.FilterChain;

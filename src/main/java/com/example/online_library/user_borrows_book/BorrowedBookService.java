@@ -1,8 +1,8 @@
 package com.example.online_library.user_borrows_book;
 
 import com.example.online_library.exceptions.EmailValidationException;
-import com.example.online_library.filter.JwtService;
-import com.example.online_library.filter.JwtTokenExtractor;
+import com.example.online_library.jwt_token.JwtService;
+import com.example.online_library.jwt_token.JwtTokenExtractor;
 import com.example.online_library.mapper.dto.BorrowBookRequestDto;
 import com.example.online_library.mapper.mappers.BorrowBookRequestMapper;
 import com.example.online_library.models.appuser.AppUser;

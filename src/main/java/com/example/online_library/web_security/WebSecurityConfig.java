@@ -1,6 +1,6 @@
 package com.example.online_library.web_security;
 
-import com.example.online_library.filter.JwtAuthenticationFilter;
+import com.example.online_library.jwt_token.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +14,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@AllArgsConstructor
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig {
 
     private final AuthenticationProviderConfig authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/auth/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",

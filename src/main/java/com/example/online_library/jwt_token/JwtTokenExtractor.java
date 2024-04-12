@@ -1,4 +1,4 @@
-package com.example.online_library.filter;
+package com.example.online_library.jwt_token;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

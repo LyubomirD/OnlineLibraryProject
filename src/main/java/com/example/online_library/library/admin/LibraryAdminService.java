@@ -1,14 +1,14 @@
 package com.example.online_library.library.admin;
 
 import com.example.online_library.exceptions.AdminAccessDeniedException;
-import com.example.online_library.filter.JwtTokenExtractor;
+import com.example.online_library.jwt_token.JwtTokenExtractor;
 import com.example.online_library.mapper.dto.LibraryRequestDto;
 import com.example.online_library.mapper.mappers.LibraryRequestMapper;
 import com.example.online_library.models.appuser.UserRole;
 import com.example.online_library.models.appuser.UserService;
 import com.example.online_library.models.book.Book;
 import com.example.online_library.models.book.BookAdminService;
-import com.example.online_library.filter.JwtService;
+import com.example.online_library.jwt_token.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

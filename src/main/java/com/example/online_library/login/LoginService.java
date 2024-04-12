@@ -1,7 +1,7 @@
 package com.example.online_library.login;
 
 import com.example.online_library.models.appuser.UserService;
-import com.example.online_library.filter.JwtService;
+import com.example.online_library.jwt_token.JwtService;
 import com.example.online_library.web_security.PasswordEncoderConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
