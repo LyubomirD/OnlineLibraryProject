@@ -1,15 +1,11 @@
 package com.example.online_library.library.admin;
 
 import com.example.online_library.mapper.dto.LibraryRequestDto;
-import com.example.online_library.models.jwt_token.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/library-admin")
@@ -17,38 +13,39 @@ import org.springframework.web.bind.annotation.RestController;
 public class LibraryAdminController {
 
     private final LibraryAdminService libraryAdminService;
-    private final JwtService jwtService;
 
-
-//    @GetMapping("get-bookId/{title}/{author}")
-//    public Long getBookById(@PathVariable String title, @PathVariable String author, HttpServletRequest httpServletRequest) {
-//        return libraryAdminService.getBookId(title, author, httpServletRequest);
-//    }
+    @GetMapping("get-bookId/{title}/{author}")
+    public Long getBookById(@PathVariable String title, @PathVariable String author, HttpServletRequest httpServletRequest) {
+        return libraryAdminService.getBookId(title, author, httpServletRequest);
+    }
 
     @PostMapping("add-book")
     public ResponseEntity<?> includeNewBookToLibrary(@RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
-        // Get JWT token from request headers
-        String token = extractTokenFromRequest(httpServletRequest);
-        // Call service method with token
-        return libraryAdminService.includeNewBookToLibrary(request, token);
+        try {
+            libraryAdminService.includeNewBookToLibrary(request, httpServletRequest);
+            return ResponseEntity.ok("Book added successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add book: " + e.getMessage());
+        }
     }
 
-//    @PutMapping("update-book/{book_id}")
-//    public void updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
-//        libraryAdminService.changeExistingBookInform(book_id, request, httpServletRequest);
-//    }
-//
-//    @DeleteMapping("delete-book/{book_id}")
-//    public void deleteBookFromLibrary(@PathVariable Long book_id, HttpServletRequest httpServletRequest) {
-//        libraryAdminService.deleteBookFromLibrary(book_id, httpServletRequest);
-//    }
+    @PutMapping("update-book/{book_id}")
+    public ResponseEntity<?> updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
+        try {
+            libraryAdminService.changeExistingBookInform(book_id, request, httpServletRequest);
+            return ResponseEntity.ok("Book updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update book: " + e.getMessage());
+        }
+    }
 
-    private String extractTokenFromRequest(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token != null && token.startsWith("Bearer ")) {
-            return token.substring(7);
-        } else {
-            throw new RuntimeException("JWT token not found in request headers");
+    @DeleteMapping("delete-book/{book_id}")
+    public ResponseEntity<?> deleteBookFromLibrary(@PathVariable Long book_id, HttpServletRequest httpServletRequest) {
+        try {
+            libraryAdminService.deleteBookFromLibrary(book_id, httpServletRequest);
+            return ResponseEntity.ok("Book deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete book: " + e.getMessage());
         }
     }
 }
