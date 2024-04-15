@@ -33,10 +33,13 @@ public class AppUser implements UserDetails {
             generator = "user_sequence"
     )
     private Long id;
+    @Column(nullable = false, length = 50)
     private String firstName;
+    @Column(nullable = false, length = 50)
     private String lastName;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, length = 50)
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

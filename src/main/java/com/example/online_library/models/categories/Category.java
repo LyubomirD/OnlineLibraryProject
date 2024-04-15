@@ -26,7 +26,7 @@ public class Category {
     )
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String genre;
 
     public Category(String genre) {
