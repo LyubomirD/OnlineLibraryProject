@@ -62,6 +62,7 @@ providing practical experience and enjoyment.
 ### 3. Development Tools and IDEs
 - **IntelliJ IDEA Ultimate Edition**: IDE for Java development
 - **Postman**: API testing and development tool
+- **MailDev**: SMTP server and web interface for email testing
 
 ### 4. Testing Frameworks and Tools
 - **Postman**: API testing and development
@@ -79,5 +80,12 @@ providing practical experience and enjoyment.
 - **UUID Tokens**: Unique tokens for user registration and confirmation
 
 --- 
+
+## User Interface (UI)
+- **Framework**: Angular
+- **GitHub Repo**: https://github.com/LyubomirD/OnlineLibraryAngular
+
+---
+
 ## Project Schema Diagram
 ![DB_Schema_Diagram.png](DB_Schema_Diagram.png)
