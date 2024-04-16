@@ -25,7 +25,7 @@ public class BorrowedBookController {
     public ResponseEntity<?> borrowBooks(@RequestBody BorrowBookRequestDto request, HttpServletRequest httpServletRequest) {
         try {
             borrowedBookService.addBookToUser(request, httpServletRequest);
-            return ResponseEntity.ok("Book borrowed successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to borrow book: " + e.getMessage());
         }
@@ -35,7 +35,7 @@ public class BorrowedBookController {
     public ResponseEntity<?> removeBorrowedBook(@RequestBody BorrowBookRequestDto request, HttpServletRequest httpServletRequest) {
         try {
             borrowedBookService.removeBookFromUser(request, httpServletRequest);
-            return ResponseEntity.ok("Book removed successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove book: " + e.getMessage());
         }

@@ -23,7 +23,7 @@ public class LibraryAdminController {
     public ResponseEntity<?> includeNewBookToLibrary(@RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
         try {
             libraryAdminService.includeNewBookToLibrary(request, httpServletRequest);
-            return ResponseEntity.ok("Book added successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add book: " + e.getMessage());
         }
@@ -33,7 +33,7 @@ public class LibraryAdminController {
     public ResponseEntity<?> updateBookInformation(@PathVariable Long book_id, @RequestBody LibraryRequestDto request, HttpServletRequest httpServletRequest) {
         try {
             libraryAdminService.changeExistingBookInform(book_id, request, httpServletRequest);
-            return ResponseEntity.ok("Book updated successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update book: " + e.getMessage());
         }
@@ -43,7 +43,7 @@ public class LibraryAdminController {
     public ResponseEntity<?> deleteBookFromLibrary(@PathVariable Long book_id, HttpServletRequest httpServletRequest) {
         try {
             libraryAdminService.deleteBookFromLibrary(book_id, httpServletRequest);
-            return ResponseEntity.ok("Book deleted successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete book: " + e.getMessage());
         }
